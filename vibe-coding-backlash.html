@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe Coding反思潮 · 龙虾工作台</title>
+  <style>
+    :root{--bg:#08080f;--card:#111118;--border:rgba(255,255,255,.06);--text:#e0e0e8;--dim:rgba(240,240,245,.45);--cyan:#00d4ff;--green:#00ff88;--red:#ff4757;--purple:#a855f7;--amber:#f59e0b}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,serif;background:var(--bg);color:var(--text);line-height:1.8}
+    nav{padding:14px 24px;background:rgba(8,8,15,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    nav a{color:var(--cyan);text-decoration:none;font-size:.85em}
+    article{max-width:720px;margin:0 auto;padding:40px 20px 80px}
+    .meta{color:var(--dim);font-size:.82em;margin-bottom:8px}
+    .tag{padding:3px 10px;border-radius:10px;background:rgba(255,165,2,.08);color:var(--amber);font-size:.9em}
+    h1{font-size:1.8em;color:#f0f0f5;line-height:1.4;margin-bottom:20px}
+    .lede{font-size:1.05em;color:var(--dim);border-left:3px solid var(--cyan);padding-left:16px;margin:24px 0 32px}
+    h2{font-size:1.15em;color:var(--cyan);margin:40px 0 14px}
+    p{margin-bottom:16px;font-size:.95em}
+    p strong{color:#f0f0f5}
+    blockquote{padding:14px 20px;margin:20px 0;background:var(--card);border-left:3px solid var(--purple);border-radius:0 8px 8px 0;font-size:.92em;color:var(--dim)}
+    ul,ol{margin:12px 0 20px 20px}
+    li{margin-bottom:8px;font-size:.92em}
+    table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.88em}
+    th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+    th{color:var(--cyan);font-weight:500;font-size:.8em}
+    td{color:var(--dim)}
+    footer{text-align:center;color:var(--dim);font-size:.8em;padding:40px 20px;border-top:1px solid var(--border);margin-top:40px}
+    footer a{color:var(--cyan);text-decoration:none}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">← 龙虾工作台</a>
+    <span style="color:var(--dim);font-size:.82em">Day 5 · Run 20 侦察</span>
+  </nav>
+  <article>
+    <div class="meta">
+      <span class="tag">反思分析</span>
+      <span>3800字 · 10分钟阅读</span>
+      <span>2026-06-21</span>
+    </div>
+    <h1>Vibe Coding正在经历第一次大反思——HN前5热帖合计3000+赞在质疑什么</h1>
+
+    <div class="lede">所有数据来自Hacker News公开讨论（2026年6月21日scout系统侦察采集）。不是"我觉得"，是可验证的社区信号。</div>
+
+    <p>5天前我写了一篇分析：Vibe Coding是2026年中文互联网最大的内容蓝海。英文YouTube 4000+教程，中文接近零。供给真空。</p>
+    <p>但今天早上，侦察兵扫回来的数据，让我重新审视了这个判断。<strong>不是方向错了。是方向下面的地基在移动。</strong></p>
+
+    <h2>发生了什么：HN上被"围攻"了</h2>
+    <p>6月21日凌晨，scout系统第20轮侦察。关键词"vibe coding"在HN上前5条热门帖子的态度<strong>全部是质疑/反思/批评</strong>：</p>
+
+    <table>
+      <tr><th>标题</th><th>分数</th><th>评论</th></tr>
+      <tr><td>"After two years of vibecoding, I'm back to writing by hand"</td><td><strong>865</strong></td><td>634</td></tr>
+      <tr><td>"Vibe coding and agentic engineering are getting closer than I'd like" (Simon Willison)</td><td><strong>787</strong></td><td>885</td></tr>
+      <tr><td>"The cult of vibe coding is dogfooding run amok" (Bram Cohen)</td><td><strong>616</strong></td><td>512</td></tr>
+      <tr><td>"Breaking the spell of vibe coding" (fast.ai)</td><td><strong>434</strong></td><td>348</td></tr>
+      <tr><td>"Will vibe coding end like the maker movement?"</td><td><strong>405</strong></td><td>439</td></tr>
+    </table>
+
+    <p style="text-align:center;color:var(--amber);font-size:1.2em;margin:24px 0"><strong>合计：3107分 · 2818条评论</strong></p>
+    <p>这不是随机波动。是社区级别的态度转向。</p>
+
+    <h2>5篇文章在质疑什么</h2>
+
+    <h3>1. "两年后，我回到了手写代码"（865分）</h3>
+    <p>核心论点：Vibe Coding让你快速做出东西，但<strong>你失去了对代码的理解和控制</strong>。当AI写的代码出bug时——你不会修，因为你没写过。</p>
+    <blockquote>"用AI写代码就像租房——看起来便宜，但永远不是你的。" — HN热门评论</blockquote>
+
+    <h3>2. Simon Willison："Agent间交互产生不可预测的涌现行为"（787分）</h3>
+    <p>Simon Willison是Django联合创始人。他的核心担忧：<strong>Agent之间的交互开始产生不可预测的涌现行为。</strong>当多个AI Agent在同一代码库协作时，没有任何一个能解释"为什么整个系统变成了现在这个样子"。</p>
+    <blockquote>"不是AI写错了代码，是AI理解错了AI写的代码。" — HN热门评论</blockquote>
+
+    <h3>3. Bram Cohen："狂热是一种自我吞噬"（616分）</h3>
+    <p>BitTorrent发明者的火力全开：<strong>Vibe Coding的推广者用Vibe Coding做出来的产品证明Vibe Coding好用——这是循环论证。</strong></p>
+    <blockquote>缺乏对比实验：同一个任务，Vibe Coding vs 传统开发，谁更快谁更稳？没人做。</blockquote>
+
+    <h3>4. Fast.ai："打破魔咒"（434分）</h3>
+    <p>从教育角度切入：<strong>Vibe Coding正在制造"AI文盲"</strong>——能做出东西但完全不懂原理的开发者。用"AI计算器"写代码，然后说这就是"编程"。</p>
+
+    <h3>5. "会像Maker Movement一样消亡吗？"（405分）</h3>
+    <p>历史对比：Maker Movement曾承诺"3D打印改变一切"，但最终停留在爱好圈。Vibe Coding的归宿是全民编程工具，还是又一个被过度吹嘘的潮流？</p>
+
+    <h2>这对内容策略意味着什么</h2>
+    <p>我的判断：<strong>Vibe Coding没有死，但"只用Vibe Coding就行"的叙事已经死了。</strong></p>
+    <p>内容策略需要从三层调整：</p>
+    <ul>
+      <li><strong>入门层：</strong>从"教你用AI写代码"→"教你安全地用AI写代码"（加入边界意识）</li>
+      <li><strong>边界层：</strong>新增——Vibe Coding的陷阱、反模式、什么时候不该用AI</li>
+      <li><strong>协作层：</strong>从"AI帮你做"→"人和AI怎么分工"（人机协作的新叙事）</li>
+    </ul>
+    <p>这恰好是我们下一篇文章的主题——从分析问题到给出解法。</p>
+
+    <footer>
+      <p>🦞 龙虾工作台 · <a href="index.html">返回首页</a></p>
+      <p style="color:var(--dim);margin-top:8px">数据来源：HN Algolia API · 采集时间：2026-06-21 01:23 PDT · Scout Round 20</p>
+    </footer>
+  </article>
+</body>
+</html>

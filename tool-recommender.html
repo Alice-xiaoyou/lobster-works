@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI工具推荐器</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#08080f;--card:#111118;--border:rgba(255,255,255,.08);--text:#e0e0e8;--dim:rgba(240,240,245,.45);--cyan:#00d4ff;--green:#00ff88;--accent:#7c3aed}
+    body{font-family:-apple-system,Inter,sans-serif;background:var(--bg);color:var(--text);max-width:640px;margin:0 auto;padding:60px 20px;min-height:100vh}
+    .card{padding:40px;background:var(--card);border:1px solid var(--border);border-radius:16px;text-align:center}
+    h1{font-size:1.6em;color:#f0f0f5;margin-bottom:6px}
+    .sub{font-size:.85em;color:var(--dim);margin-bottom:32px}
+
+    .quiz-area{text-align:left;margin:24px 0}
+    .q-label{font-size:.9em;color:var(--dim);margin-bottom:8px}
+    .options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+    .opt-btn{padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;font-size:.9em;text-align:left;transition:all .2s}
+    .opt-btn:hover{border-color:var(--cyan);background:rgba(0,212,255,.05)}
+    .opt-btn.selected{border-color:var(--cyan);background:rgba(0,212,255,.1);color:var(--cyan)}
+
+    .results{display:none;margin-top:32px;padding:24px;background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.12);border-radius:12px}
+    .results h2{color:var(--green);font-size:1.1em;margin-bottom:4px}
+    .results .tool-name{font-size:1.4em;font-weight:700;color:#f0f0f5;margin:8px 0}
+    .results .why{font-size:.85em;color:var(--dim);line-height:1.6}
+    .results .alt{margin-top:16px;font-size:.8em;color:var(--dim)}
+    .results .alt span{color:var(--cyan)}
+
+    #step-dots{display:flex;justify-content:center;gap:8px;margin-bottom:20px}
+    #step-dots .dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+    #step-dots .dot.active{background:var(--cyan)}
+
+    .debug{font-size:.7em;color:var(--dim);margin-top:24px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🦞 AI工具推荐器</h1>
+    <div class="sub">回答3个问题，帮你找到最适合的AI编程工具</div>
+    <div id="step-dots">
+      <div class="dot active" id="d1"></div>
+      <div class="dot" id="d2"></div>
+      <div class="dot" id="d3"></div>
+    </div>
+
+    <div class="quiz-area" id="quiz">
+      <div class="q-label" id="q-text">你会写代码吗？</div>
+      <div class="options" id="opts"></div>
+    </div>
+
+    <div class="results" id="results">
+      <h2>🎯 最适合你的是</h2>
+      <div class="tool-name" id="tool-name"></div>
+      <div class="why" id="tool-why"></div>
+      <div class="alt">备选：<span id="tool-alt"></span></div>
+    </div>
+
+    <div class="debug" id="debug"></div>
+  </div>
+
+<script>
+const STEPS = [
+  {
+    q: "你会写代码吗？",
+    opts: [
+      {label:"完全不会，一行都不会", value:"nocode"},
+      {label:"会一点，能看懂基础语法", value:"somecode"},
+      {label:"会写，有项目经验", value:"coder"}
+    ]
+  },
+  {
+    q: "你主要想做什么？",
+    opts: [
+      {label:"做个网站/APP", value:"webapp"},
+      {label:"写个小工具/脚本", value:"script"},
+      {label:"学习编程", value:"learn"},
+      {label:"快速原型验证想法", value:"prototype"}
+    ]
+  },
+  {
+    q: "你的预算？",
+    opts: [
+      {label:"不想花钱（免费最好）", value:"free"},
+      {label:"每月可以花¥100-200", value:"budget"},
+      {label:"预算不敏感，要好用的", value:"premium"}
+    ]
+  }
+];
+
+let answers = [];
+let step = 0;
+
+function render(){
+  document.getElementById('step-dots').querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===step)});
+  const s = STEPS[step];
+  document.getElementById('q-text').textContent = s.q;
+  const optsEl = document.getElementById('opts');
+  optsEl.innerHTML = s.opts.map((o,i)=>`<button class="opt-btn" onclick="select(${i})">${o.label}</button>`).join('');
+  document.getElementById('results').style.display = 'none';
+}
+
+function select(i){
+  answers.push({step,Q:STEPS[step].q,A:STEPS[step].opts[i].label,val:STEPS[step].opts[i].value});
+  step++;
+  if(step < STEPS.length){render()}else{showResult()}
+}
+
+function showResult(){
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('step-dots').innerHTML='<span style="font-size:.85em;color:var(--dim)">分析中...</span>';
+
+  const a = answers;
+  const code = a[0].val;
+  const goal = a[1].val;
+  const budget = a[2].val;
+
+  let tool, why, alt;
+
+  if(code==="nocode"){
+    tool="Replit Agent";
+    why="最适合零基础小白。打开浏览器就能用，你说人话它写代码。免费版够入门，付费解锁更强功能。CEO亲测：不需要雇工程师了。";
+    alt= budget==="premium"? "Bolt.new（一键部署更强）":"Lovable（设计更漂亮）";
+  }else if(code==="somecode" && goal!=="learn"){
+    tool= goal==="prototype"? "Bolt.new":"Lovable";
+    why= goal==="prototype"?
+      "Bolt.new即时预览+一键部署，30分钟内可以把想法变成可用的原型。懂一点代码就更快了。":
+      "Lovable生成的UI普遍更美观，适合要做给人看的产品。你有基础代码能力可以微调细节。";
+    alt= budget==="premium"? "Codex CLI（功能最强但要会用终端）":"Replit Agent（更简单但功能少一点）";
+  }else if(code==="coder" || goal==="learn"){
+    tool="Codex CLI";
+    why= goal==="learn"?
+      "如果你想真正提升编程能力，Codex是最佳选择。它能解释代码、帮你重构、写测试。不是替代你，是增强你。":
+      "终端原生，功能最全。47分钟从零到部署一个完整Web应用。专业开发者的首选。";
+    alt= "v0 by Vercel（专注前端/UI组件，配合Codex用效果最好）";
+  }else{
+    tool="Replit Agent";
+    why="综合来看，入门门槛最低、功能最完整、价格合理。适合大多数人的第一把AI编程锤子。";
+    alt="Bolt.new（如果你愿意多花点时间学习）";
+  }
+
+  if(budget==="free" && ["Codex CLI"].includes(tool)){
+    tool="Replit Agent";
+    why="免费额度充足，入门功能齐全。虽然专业功能有限，但对大多数个人项目足够用。选了免费的最优解。";
+    alt="Bolt.new（付费版更强大，免费版也够入门）";
+  }
+
+  document.getElementById('tool-name').textContent=tool;
+  document.getElementById('tool-why').textContent=why;
+  document.getElementById('tool-alt').textContent=`${alt}`;
+  document.getElementById('results').style.display='block';
+  document.getElementById('step-dots').innerHTML='';
+}
+
+render();
+</script>
+</body>
+</html>

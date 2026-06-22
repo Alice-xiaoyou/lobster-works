@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI API成本计算器</title>
+  <style>
+    :root{--bg:#08080f;--card:#111118;--border:rgba(255,255,255,.06);--text:#e0e0e8;--dim:rgba(240,240,245,.45);--cyan:#00d4ff;--green:#00ff88;--red:#ff4757;--yellow:#ffa502;--accent:#7c3aed}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,Inter,sans-serif;background:var(--bg);color:var(--text);max-width:880px;margin:0 auto;padding:40px 20px}
+    h1{text-align:center;color:#f0f0f5;margin-bottom:4px;font-size:1.8em}
+    .sub{text-align:center;color:var(--dim);font-size:.85em;margin-bottom:32px}
+
+    .providers{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:32px}
+    .p-card{padding:20px;background:var(--card);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s}
+    .p-card:hover{border-color:var(--cyan)}
+    .p-card.selected{border-color:var(--cyan);background:rgba(0,212,255,.06)}
+    .p-card h3{font-size:1em;color:#f0f0f5;margin-bottom:4px}
+    .p-card .model{font-size:.8em;color:var(--dim)}
+    .p-card .price{font-size:1.3em;font-weight:700;color:var(--cyan);margin-top:8px}
+    .p-card .price small{font-size:.5em;color:var(--dim);font-weight:400}
+
+    .calc-section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px;margin-bottom:24px}
+    .calc-section h2{font-size:1em;color:var(--cyan);margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+
+    .input-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .input-row label{min-width:140px;font-size:.85em;color:var(--dim)}
+    .input-row input{flex:1;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.9em;outline:none}
+    .input-row input:focus{border-color:var(--cyan)}
+    .input-row .unit{font-size:.8em;color:var(--dim);min-width:50px}
+
+    .scenario-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .scenario-btn{padding:8px 16px;background:var(--bg);border:1px solid var(--border);border-radius:20px;color:var(--dim);cursor:pointer;font-size:.8em;transition:all .2s}
+    .scenario-btn:hover,.scenario-btn.active{border-color:var(--cyan);color:var(--cyan)}
+
+    .results{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+    .result-card{padding:16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-align:center}
+    .result-card .val{font-size:1.5em;font-weight:700;color:var(--cyan)}
+    .result-card .lbl{font-size:.75em;color:var(--dim);margin-top:4px}
+    .result-card.highlight{border-color:var(--green)}
+    .result-card.highlight .val{color:var(--green)}
+
+    .comparison{margin-top:24px}
+    .comp-table{width:100%;border-collapse:collapse;font-size:.85em}
+    .comp-table th{text-align:left;padding:8px 12px;color:var(--dim);font-weight:500;border-bottom:1px solid var(--border)}
+    .comp-table td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.03)}
+    .comp-table tr.best{background:rgba(0,255,136,.04)}
+    .comp-table .best-tag{color:var(--green);font-weight:600}
+
+    .save-bar{text-align:center;margin:24px 0;padding:20px;background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.1);border-radius:10px}
+    .save-bar .saved{font-size:1.3em;font-weight:700;color:var(--green)}
+    .save-bar .detail{font-size:.85em;color:var(--dim);margin-top:4px}
+
+    footer{text-align:center;color:var(--dim);font-size:.75em;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)}
+    a{color:var(--cyan)}
+  </style>
+</head>
+<body>
+  <h1>📊 AI API 成本计算器</h1>
+  <div class="sub">对比主流AI模型的使用成本 · 选择最省钱的方案</div>
+
+  <div class="calc-section">
+    <h2>1. 选择要对比的模型</h2>
+    <div class="providers" id="providerGrid"></div>
+  </div>
+
+  <div class="calc-section">
+    <h2>2. 设置使用量</h2>
+    <div class="scenario-btns" id="scenarioBtns">
+      <button class="scenario-btn active" onclick="setScenario('light')">💡 轻度使用</button>
+      <button class="scenario-btn" onclick="setScenario('medium')">⚡ 中度使用</button>
+      <button class="scenario-btn" onclick="setScenario('heavy')">🔥 重度使用</button>
+      <button class="scenario-btn" onclick="setScenario('enterprise')">🏢 企业级</button>
+    </div>
+    <div class="input-row">
+      <label>日均请求次数</label>
+      <input type="number" id="requestsPerDay" value="100" min="1" onchange="calc()">
+      <span class="unit">次/天</span>
+    </div>
+    <div class="input-row">
+      <label>平均输入 tokens</label>
+      <input type="number" id="inputTokens" value="1000" min="1" onchange="calc()">
+      <span class="unit">tokens</span>
+    </div>
+    <div class="input-row">
+      <label>平均输出 tokens</label>
+      <input type="number" id="outputTokens" value="500" min="1" onchange="calc()">
+      <span class="unit">tokens</span>
+    </div>
+  </div>
+
+  <div class="calc-section">
+    <h2>3. 成本对比结果</h2>
+    <div class="comparison">
+      <table class="comp-table" id="compTable"></table>
+    </div>
+    <div id="savingsBar" class="save-bar" style="display:none"></div>
+  </div>
+
+  <div class="results" id="summaryCards"></div>
+
+  <footer>
+    🦞 龙虾工作台 · AI工具评测站 · 数据来源：各厂商2026年6月官方定价<br/>
+    价格可能变动，请以官网为准。本工具仅作参考。
+  </footer>
+
+<script>
+const MODELS = [
+  {id:'gpt4o',name:'GPT-4o',provider:'OpenAI',inputPrice:2.50,outputPrice:10.00,context:'128K',desc:'多模态旗舰'},
+  {id:'gpt4mini',name:'GPT-4o Mini',provider:'OpenAI',inputPrice:0.15,outputPrice:0.60,context:'128K',desc:'轻量性价比'},
+  {id:'claude35',name:'Claude 3.5 Sonnet',provider:'Anthropic',inputPrice:3.00,outputPrice:15.00,context:'200K',desc:'编程最强'},
+  {id:'claude3h',name:'Claude 3 Haiku',provider:'Anthropic',inputPrice:0.25,outputPrice:1.25,context:'200K',desc:'快速低廉'},
+  {id:'dsv4',name:'DeepSeek V4',provider:'DeepSeek',inputPrice:0.14,outputPrice:0.28,context:'128K',desc:'国产性价比之王'},
+  {id:'glm5',name:'GLM-5.2',provider:'智谱',inputPrice:0.10,outputPrice:0.10,context:'128K',desc:'统一低价'},
+  {id:'gemini15',name:'Gemini 2.0 Flash',provider:'Google',inputPrice:0.075,outputPrice:0.30,context:'1M',desc:'长上下文+低价'},
+  {id:'qwen3',name:'Qwen3-Max',provider:'阿里',inputPrice:0.57,outputPrice:2.28,context:'128K',desc:'中文理解强'},
+];
+
+const SCENARIOS = {
+  light:{requests:50,input:800,output:300,label:'轻度'},
+  medium:{requests:200,input:1500,output:600,label:'中度'},
+  heavy:{requests:1000,input:2000,output:1000,label:'重度'},
+  enterprise:{requests:10000,input:3000,output:1500,label:'企业'},
+};
+
+let selectedModels = new Set(['dsv4','gpt4mini','gemini15','claude35','gpt4o']);
+
+function renderProviders(){
+  const grid = document.getElementById('providerGrid');
+  grid.innerHTML = MODELS.map(m=>`
+    <div class="p-card ${selectedModels.has(m.id)?'selected':''}" onclick="toggleModel('${m.id}')">
+      <h3>${m.name}</h3>
+      <div class="model">${m.provider} · ${m.desc} · ${m.context} 上下文</div>
+      <div class="price">$${m.inputPrice}<small>/M in</small> &nbsp; $${m.outputPrice}<small>/M out</small></div>
+    </div>
+  `).join('');
+}
+
+function toggleModel(id){
+  if(selectedModels.has(id)){selectedModels.delete(id)}else{selectedModels.add(id)}
+  renderProviders();
+  calc();
+}
+
+function setScenario(s){
+  document.querySelectorAll('.scenario-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`[onclick="setScenario('${s}')"]`).classList.add('active');
+  const sc = SCENARIOS[s];
+  document.getElementById('requestsPerDay').value = sc.requests;
+  document.getElementById('inputTokens').value = sc.input;
+  document.getElementById('outputTokens').value = sc.output;
+  calc();
+}
+
+function calc(){
+  const req = +document.getElementById('requestsPerDay').value || 0;
+  const inTok = +document.getElementById('inputTokens').value || 0;
+  const outTok = +document.getElementById('outputTokens').value || 0;
+
+  const selected = MODELS.filter(m=>selectedModels.has(m.id));
+  const rows = selected.map(m=>{
+    const inCost = (req * inTok / 1e6) * m.inputPrice;
+    const outCost = (req * outTok / 1e6) * m.outputPrice;
+    const daily = inCost + outCost;
+    return {model:m,daily,monthly:daily*30,annual:daily*365};
+  }).sort((a,b)=>a.daily-b.daily);
+
+  const cheapest = rows[0];
+  const mostExpensive = rows[rows.length-1];
+
+  const tbody = rows.map((r,i)=>{
+    const cls = i===0?'best':'';
+    const tag = i===0?'<span class="best-tag">🏆 最省</span>':'';
+    return `<tr class="${cls}">
+      <td>${r.model.name} ${tag}</td>
+      <td>${r.model.provider}</td>
+      <td>$${r.daily.toFixed(2)}</td>
+      <td>$${r.monthly.toFixed(0)}</td>
+      <td>$${r.annual.toFixed(0)}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('compTable').innerHTML = `
+    <tr><th>模型</th><th>厂商</th><th>日成本</th><th>月成本</th><th>年成本</th></tr>
+    ${tbody}
+  `;
+
+  const saveBar = document.getElementById('savingsBar');
+  if(rows.length>=2){
+    const monthlySaving = mostExpensive.monthly - cheapest.monthly;
+    const pct = ((monthlySaving / mostExpensive.monthly)*100).toFixed(0);
+    saveBar.style.display='block';
+    saveBar.innerHTML = `
+      <div class="saved">💰 选 ${cheapest.model.name} 比 ${mostExpensive.model.name} 省 $${monthlySaving.toFixed(0)}/月</div>
+      <div class="detail">节省 ${pct}% · 一年省 $${(monthlySaving*12).toFixed(0)} · 够买一台 MacBook Air</div>
+    `;
+  }else{saveBar.style.display='none'}
+
+  document.getElementById('summaryCards').innerHTML = rows.slice(0,3).map(r=>`
+    <div class="result-card ${r===cheapest?'highlight':''}">
+      <div class="val">$${r.monthly.toFixed(0)}/月</div>
+      <div class="lbl">${r.model.name} · 月成本</div>
+    </div>
+  `).join('');
+}
+
+renderProviders();
+setScenario('medium');
+</script>
+</body>
+</html>
