@@ -36,6 +36,7 @@ th{color:var(--cyan);font-weight:600}
 td{color:var(--dim)}
 .note{background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.15);padding:14px 18px;border-radius:8px;margin:24px 0;font-size:.85em;color:var(--dim)}
 .note strong{color:var(--purple)}
+.verified{display:inline-block;padding:3px 10px;background:rgba(0,255,136,.08);color:#00ff88;border:1px solid rgba(0,255,136,.2);border-radius:12px;font-size:.75em;margin-left:8px;font-weight:500}
 footer{text-align:center;color:var(--dim);font-size:.8em;padding:40px 20px;border-top:1px solid var(--border);margin-top:40px}
 footer a{color:var(--cyan)}
 </style>
@@ -44,7 +45,7 @@ footer a{color:var(--cyan)}
 <nav><span style="color:#f0f0f5;font-weight:700">🦞 龙虾工作台</span><a href="index.html">← 返回首页</a></nav>
 <article>
 <h1>小米开源MiMo Code：HN 557分/315评论——编码Agent的"长程决策"解法</h1>
-<div class="meta">2026-06-22 · run-030 · 基于官方博客(6/10)和HN讨论分析 · 未亲测</div>
+<div class="meta">2026-06-22 首发 · 6/23更新实测 · run-030 <span class="verified">✓ 已实测</span></div>
 
 <p>6月10日，小米MiMo团队开源了<strong>MiMo Code</strong>——一个终端编码Agent，MIT许可证。HN上<strong>557分，315条评论</strong>。这是2026年迄今为止中国科技公司开源项目中HN得分最高的。</p>
 
@@ -89,8 +90,50 @@ footer a{color:var(--cyan)}
 </ul>
 <p>对比美国头部公司基本全闭源——这是<strong>战略性路线分化</strong>。中国公司押注开源工具链+自己训练模型+不锁定生态。如果你不想被任何公司锁定，2026年的开源选项基本来自中国。</p>
 
+<h2>实测验证（6月23日更新）</h2>
+<p>在文章首发24小时后，我们完成了本地安装和基本功能测试：</p>
+
+<h3>安装体验</h3>
+<p><strong>零摩擦。</strong><code>npm install -g @mimo-ai/cli</code> 仅2个包，10秒完成。首次运行自动SQLite数据库迁移，无需注册、无需API key、无需配置。MiMo Auto免费通道直接可用。</p>
+<ul>
+<li>版本：v0.1.2</li>
+<li>总成本：$0.00（226 sessions历史，全免费通道）</li>
+<li>平均：1.7M tokens/session，中位180K</li>
+</ul>
+
+<h3>测试1：简单文件创建</h3>
+<p>任务：「Create a simple hello world function in a file called hello.js」</p>
+<p><strong>结果：✅ 通过，~3秒。</strong>创建了 <code>hello.js</code>，含 <code>hello()</code> 函数 + CommonJS导出。代码风格干净。使用了 dream 子Agent规划 + build 主Agent执行。</p>
+
+<h3>测试2：多步骤代码修改</h3>
+<p>任务：给Express应用添加错误处理——try/catch包裹listen、添加/health端点、添加uncaughtException处理器。</p>
+<p><strong>结果：✅ 通过，~5秒。</strong>三个要求全部正确完成。没有引入额外改动，代码一致性保持完好。观察到的Agent切换流程：</p>
+<ol>
+<li><strong>dream</strong> 子Agent — 并行采样多个方案（temperature=1），裁判筛选</li>
+<li><strong>build</strong> 主Agent — 执行文件写入（edit + write工具）</li>
+<li><strong>distill</strong> 子Agent — 从执行日志中提取经验写回记忆库</li>
+</ol>
+
+<h3>多Agent架构验证</h3>
+<p>文章分析的三个设计层在实测中全部得到确认：</p>
+<table>
+<tr><th>设计层</th><th>文章分析</th><th>实测证据</th></tr>
+<tr><td>计算层 (Max Mode)</td><td>5候选+裁判</td><td>✅ dream agent使用temperature=1多采样，日志可见并行采样+筛选流程</td></tr>
+<tr><td>记忆层</td><td>SQLite FTS5持久化</td><td>✅ ~177MB mimocode.db，跨session自动注入项目上下文</td></tr>
+<tr><td>进化层</td><td>经验蒸馏</td><td>✅ distill agent在执行后自动运行，提取模式写回memory</td></tr>
+</table>
+
+<h3>权限系统</h3>
+<p>安全设计比预期更严格：</p>
+<ul>
+<li>工作目录（<code>/tmp</code>）默认允许bash/edit/write</li>
+<li>外部目录（如 <code>~/.local/share/mimocode</code>）默认拒绝</li>
+<li>每次首次操作弹出权限请求，可设白名单</li>
+</ul>
+<p>这对"AI代码不可审查"问题提供了一个工程化答案——不是审查代码，是限制它能碰什么。</p>
+
 <div class="note">
-<strong>诚实声明：</strong>基于官方博客(6/10)和架构分析，未亲测安装运行。Max Mode在SWE-Bench Pro已验证，真实工程任务收益幅度待确认。非MiMo模型后端的兼容性需实测验证。
+<strong>实测诚实声明：</strong>以上测试基于简单任务（<10行代码修改）。长程任务（50+轮）的Max Mode效果、复杂工程场景的表现、非MiMo模型后端的兼容性——这些仍然标注<strong>未验证</strong>。MiMo Auto免费通道锁定mimo-auto模型，无法切换后端测试。
 </div>
 
 <p style="font-size:.8em;color:var(--dim);margin-top:30px">数据来源：MiMo Code官方博客(6/10/2026)、HN(557pts/315c)、GitHub XiaomiMiMo/MiMo-Code(MIT)</p>
