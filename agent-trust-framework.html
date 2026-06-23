@@ -42,6 +42,13 @@ td{color:var(--dim)}
 .note strong{color:var(--purple)}
 footer{text-align:center;color:var(--dim);font-size:.8em;padding:40px 20px;border-top:1px solid var(--border);margin-top:40px}
 footer a{color:var(--cyan)}
+<style>
+    .related{border-top:1px solid var(--border);margin-top:40px;padding-top:24px}
+    .related h3{font-size:.9em;color:var(--cyan);margin-bottom:12px}
+    .related a{display:block;padding:8px 0;color:var(--dim);text-decoration:none;font-size:.85em;border-bottom:1px solid rgba(255,255,255,.03);transition:color .2s}
+    .related a:hover{color:var(--cyan)}
+    .related a strong{color:#f0f0f5}
+  </style>
 </style>
 
   <script type="application/ld+json">
@@ -148,6 +155,13 @@ footer a{color:var(--cyan)}
 
 <p style="font-size:.78em;color:var(--dim);margin-top:30px">数据来源：ANMA(6/21 HN)、Pure Effect(6/21 HN)、State Harness(6/20 HN)、MemoryOps(6/22 HN)、EGC(6/21 HN)、SkillsBench(arxiv 2602.12670)、Dev.to(6/22)、CVE-2026-25253、Google Whitepaper | 所有信号来自公开API实时抓取</p>
 </article>
+
+  <section class="related">
+    <h3>📖 相关阅读</h3>
+      <a href="agent-security-cve.html"><strong>CVE-2026-25253 首个Agent RCE</strong> — 当你让Agent自由执行命令时错过了什么</a>
+      <a href="mimo-code.html"><strong>MiMo Code深度解读（已实测）</strong> — 小米开源编码Agent + 本地验证报告</a>
+      <a href="pure-effect.html"><strong>Pure Effect深度评测</strong> — <1KB TS库如何让AI代码先审后跑</a>
+  </section>
 <footer><p>🦞 龙虾工作台 · Build in Public · <a href="https://github.com/Alice-xiaoyou/lobster-works">GitHub</a></p><p style="margin-top:8px"><a href="index.html">返回首页</a></p></footer>
 </body>
 </html>
