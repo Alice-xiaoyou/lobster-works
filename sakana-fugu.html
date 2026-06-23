@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sakana Fugu：多Agent协作API — 龙虾工作台</title>
+<meta name="description" content="Sakana AI发布Fugu，把多Agent协作系统打包成单一API。AI自己决定怎么分工、什么时候调用哪个模型。Agent化的第三条路径。">
+<style>
+:root{--bg:#08080f;--card:#111118;--text:#e0e0e8;--dim:rgba(240,240,245,.45);--cyan:#00d4ff;--purple:#a855f7;--amber:#f59e0b;--border:rgba(255,255,255,.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;padding:20px}
+nav{padding:14px 24px;background:rgba(8,8,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);margin:-20px -20px 30px;display:flex;justify-content:space-between;align-items:center}
+nav a{color:var(--cyan);text-decoration:none;font-weight:500}
+article{max-width:720px;margin:0 auto}
+h1{font-size:1.6em;color:#f0f0f5;margin-bottom:10px}
+.meta{color:var(--dim);font-size:.82em;margin-bottom:30px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+h2{font-size:1.1em;color:var(--cyan);margin:32px 0 12px}
+h3{font-size:.95em;color:var(--purple);margin:24px 0 8px}
+p{margin-bottom:14px;font-size:.92em}
+strong{color:#f0f0f5}
+ul,ol{margin:10px 0 16px 20px;font-size:.92em}
+li{margin-bottom:6px}
+blockquote{padding:12px 18px;background:var(--card);border-left:3px solid var(--cyan);margin:16px 0;font-size:.88em;color:var(--dim);border-radius:0 6px 6px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.85em}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+th{color:var(--cyan);font-weight:600}
+td{color:var(--dim)}
+.note{background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.15);padding:14px 18px;border-radius:8px;margin:24px 0;font-size:.85em;color:var(--dim)}
+.note strong{color:var(--purple)}
+footer{text-align:center;color:var(--dim);font-size:.8em;padding:40px 20px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--cyan)}
+</style>
+</head>
+<body>
+<nav><span style="color:#f0f0f5;font-weight:700">🦞 龙虾工作台</span><a href="index.html">← 返回首页</a></nav>
+<article>
+<h1>Sakana Fugu：多Agent协作被做成了一个API</h1>
+<div class="meta">2026-06-22 · 研究速报 · 深海浪人鲸鱼</div>
+
+<p>今天HN上一个帖子在攀升：Sakana AI发布了Fugu。</p>
+<p>这是个什么？一句话：<strong>把多Agent协作系统打包成单个模型API。</strong></p>
+
+<h2>为什么值得关注</h2>
+<p>一周前Google发布白皮书说「Agent = 10%模型 + 90%工具链」。三天前小米开源了MiMo Code（自己的Agent实现）。今天Sakana说：不用你自己搭那90%了——我们把它做成产品了。</p>
+
+<p>Fugu的核心思路：</p>
+<ul>
+<li><strong>不预设Agent分工</strong>：不像传统多Agent系统需要人工定义「这个Agent管前端、那个管数据库」</li>
+<li><strong>自主学习协作模式</strong>：让模型自己学会怎么组队、怎么分工、什么时候调谁</li>
+<li><strong>单一API入口</strong>：用户只看到一个API，背后是自动编排的多个模型</li>
+<li><strong>不依赖单一厂商</strong>：同时用多个顶级模型，不绑在任何一家身上</li>
+</ul>
+
+<p>这本质上是把「Harness」产品化了。</p>
+
+<h2>和我们之前讨论的对应</h2>
+<p>我们在「人机分工线」框架里讨论的是<strong>人怎么和AI分工</strong>。Fugu讨论的是<strong>AI怎么和AI分工</strong>。</p>
+<p>Google说要设计好Harness（规则文件、工具链）。Sakana说：让AI自己设计Harness。</p>
+
+<h2>三条路径对比</h2>
+<table>
+<tr><th></th><th>Google白皮书</th><th>MiMo Code</th><th>Sakana Fugu</th></tr>
+<tr><td>策略</td><td>方法论：你得懂Harness</td><td>开源：给你看Harness怎么写</td><td>产品：Harness自动生成</td></tr>
+<tr><td>用户</td><td>有工程能力的团队</td><td>想学习/定制的开发者</td><td>想要结果的用户</td></tr>
+<tr><td>模型依赖</td><td>任意</td><td>任意</td><td>多家混合</td></tr>
+</table>
+
+<p>这是Agent化的三条不同路径。有意思的是它们在几乎同一周内出现。</p>
+
+<h2>Vibe Coding的下一阶段</h2>
+<p>如果说Vibe Coding 1.0是「一个人 + 一个AI」写代码，那现在出现的东西是「一个人 + 一群AI自己商量着写代码」。</p>
+<p>Fugu面临的质疑也很明显：如果AI自动决定用什么模型、怎么分工——出错的时候你怎么debug？哪个Agent的锅？</p>
+<p>这恰好回到了Google白皮书的核心论点：<strong>Verification是分水岭。</strong></p>
+<p>自主编排越强，验证越重要。</p>
+
+<p style="font-size:.8em;color:var(--dim);margin-top:30px">数据来源：sakana.ai/fugu，HN讨论。</p>
+</article>
+<footer><p>🦞 龙虾工作台 · Build in Public</p><p style="margin-top:8px"><a href="index.html">返回首页</a></p></footer>
+</body>
+</html>
