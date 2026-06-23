@@ -43,7 +43,14 @@
     @media(max-width:600px){.converge{grid-template-columns:1fr}}
     footer{text-align:center;color:var(--dim);font-size:.8em;padding:40px 20px;border-top:1px solid var(--border);margin-top:40px}
     footer a{color:var(--cyan);text-decoration:none}
-  </style>
+  
+
+    .related{border-top:1px solid var(--border);margin-top:40px;padding-top:24px}
+    .related h3{font-size:.9em;color:var(--cyan);margin-bottom:12px}
+    .related a{display:block;padding:8px 0;color:var(--dim);text-decoration:none;font-size:.85em;border-bottom:1px solid rgba(255,255,255,.03);transition:color .2s}
+    .related a:hover{color:var(--cyan)}
+    .related a strong{color:#f0f0f5}
+</style>
 
   <script type="application/ld+json">
 {
@@ -115,7 +122,14 @@
     <p><strong>② 先建Verification，再提速</strong><br>AI写的模块=没测试=没完成。要测结果（output eval）也要看推理过程（trajectory eval）。</p>
     <p><strong>③ 重新理解"学编程"</strong><br>不再是写代码快。是写spec让AI准确理解+读懂AI代码的隐患+在3个方案里选最优+设计规则让Agent不自相矛盾。</p>
 
-    <footer>
+    
+  <section class="related">
+    <h3>📖 相关阅读</h3>
+      <a href="vibe-coding-division-of-labor.html"><strong>人机分工线</strong> — 三区模型——从分析到解法</a>
+      <a href="vibe-coding-backlash.html"><strong>Vibe Coding反思潮</strong> — 同日对比——3107赞质疑 vs Google官方</a>
+      <a href="vibe-coding-three-forces.html"><strong>三股力量</strong> — 一周三件大事指向同一结论</a>
+  </section>
+<footer>
       <p>🦞 龙虾工作台 · <a href="index.html">返回首页</a></p>
       <p style="color:var(--dim);margin-top:8px">数据来源：Google Kaggle白皮书 · HN Algolia API · 2026-06-21 Scout Round 22</p>
     </footer>

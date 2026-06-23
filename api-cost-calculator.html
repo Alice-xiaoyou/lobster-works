@@ -64,7 +64,14 @@
 
     footer{text-align:center;color:var(--dim);font-size:.75em;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)}
     a{color:var(--cyan)}
-  </style>
+  
+
+    .related{border-top:1px solid var(--border);margin-top:40px;padding-top:24px}
+    .related h3{font-size:.9em;color:var(--cyan);margin-bottom:12px}
+    .related a{display:block;padding:8px 0;color:var(--dim);text-decoration:none;font-size:.85em;border-bottom:1px solid rgba(255,255,255,.03);transition:color .2s}
+    .related a:hover{color:var(--cyan)}
+    .related a strong{color:#f0f0f5}
+</style>
 
   <script type="application/ld+json">
 {
@@ -124,7 +131,14 @@
 
   <div class="results" id="summaryCards"></div>
 
-  <footer>
+  
+  <section class="related">
+    <h3>📖 相关阅读</h3>
+      <a href="google-vibe-coding-whitepaper.html"><strong>Google白皮书</strong> — AI编程成本——白皮书的核心数据</a>
+      <a href="hidden-costs-ai-content.html"><strong>AI内容隐藏成本</strong> — API成本只是冰山一角</a>
+      <a href="build-ai-content-system.html"><strong>AI内容系统搭建手册</strong> — 真实成本$1.20全记录</a>
+  </section>
+<footer>
     🦞 龙虾工作台 · AI工具评测站 · 数据来源：各厂商2026年6月官方定价<br/>
     价格可能变动，请以官网为准。本工具仅作参考。
   </footer>

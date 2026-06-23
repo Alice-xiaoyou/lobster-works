@@ -38,7 +38,14 @@
     td{color:var(--dim)}
     footer{text-align:center;color:var(--dim);font-size:.8em;padding:40px 20px;border-top:1px solid var(--border);margin-top:40px}
     footer a{color:var(--cyan);text-decoration:none}
-  </style>
+  
+
+    .related{border-top:1px solid var(--border);margin-top:40px;padding-top:24px}
+    .related h3{font-size:.9em;color:var(--cyan);margin-bottom:12px}
+    .related a{display:block;padding:8px 0;color:var(--dim);text-decoration:none;font-size:.85em;border-bottom:1px solid rgba(255,255,255,.03);transition:color .2s}
+    .related a:hover{color:var(--cyan)}
+    .related a strong{color:#f0f0f5}
+</style>
 
   <script type="application/ld+json">
 {
@@ -117,7 +124,14 @@
     </ul>
     <p>这恰好是我们下一篇文章的主题——从分析问题到给出解法。</p>
 
-    <footer>
+    
+  <section class="related">
+    <h3>📖 相关阅读</h3>
+      <a href="vibe-coding-division-of-labor.html"><strong>人机分工线</strong> — 三区模型+4问题快速决策卡</a>
+      <a href="google-vibe-coding-whitepaper.html"><strong>Google白皮书+HN反思潮</strong> — 同日对比——5个惊人交汇</a>
+      <a href="vibe-coding-three-forces.html"><strong>三股力量</strong> — Google+HN+小米的同一结论</a>
+  </section>
+<footer>
       <p>🦞 龙虾工作台 · <a href="index.html">返回首页</a></p>
       <p style="color:var(--dim);margin-top:8px">数据来源：HN Algolia API · 采集时间：2026-06-21 01:23 PDT · Scout Round 20</p>
     </footer>
