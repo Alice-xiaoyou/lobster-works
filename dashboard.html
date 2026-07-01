@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦞 内容作战指挥室 — 深海浪人鲸鱼</title>
+<style>
+/* ── Reset & Base ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #0a0e0f;
+  --bg-secondary: #111618;
+  --bg-card: #161b1d;
+  --bg-card-hover: #1c2325;
+  --border: #1e282b;
+  --border-active: #2a383c;
+  --text-primary: #e8edf0;
+  --text-secondary: #8a99a3;
+  --text-muted: #556068;
+  --red: #C1121F;
+  --red-dim: #780000;
+  --red-glow: rgba(193, 18, 31, 0.25);
+  --green: #07c160;
+  --green-dim: #044a25;
+  --green-glow: rgba(7, 193, 96, 0.2);
+  --amber: #f59e0b;
+  --blue: #3b82f6;
+  --accent: #C1121F;
+  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ── Scanline / CRT overlay ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ── Header ── */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px; margin-bottom: 20px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  flex-wrap: wrap; gap: 16px;
+}
+
+.header-left { display: flex; align-items: center; gap: 14px; }
+.header-logo {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--red-dim), var(--red));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+  box-shadow: 0 0 20px var(--red-glow);
+}
+.header-title h1 { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
+.header-title .subtitle {
+  font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);
+  letter-spacing: 2px; text-transform: uppercase;
+}
+.header-status {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; background: rgba(7,193,96,0.08);
+  border: 1px solid var(--green-dim); border-radius: 20px;
+  font-size: 12px; color: var(--green); font-family: var(--font-mono);
+}
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+  box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Stats Grid ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px; margin-bottom: 20px;
+}
+
+.stat-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 18px 20px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover {
+  border-color: var(--border-active);
+  box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+.stat-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.6;
+}
+.stat-card.green::after { --accent: var(--green); }
+.stat-card.blue::after { --accent: var(--blue); }
+.stat-card.amber::after { --accent: var(--amber); }
+
+.stat-icon { font-size: 28px; margin-bottom: 6px; }
+.stat-card .stat-val {
+  font-size: 36px; font-weight: 800; font-family: var(--font-mono);
+  letter-spacing: -1px; line-height: 1;
+}
+.stat-card.green .stat-val { color: var(--green); text-shadow: 0 0 20px var(--green-glow); }
+.stat-card.red .stat-val { color: var(--red); text-shadow: 0 0 20px var(--red-glow); }
+.stat-card.blue .stat-val { color: var(--blue); text-shadow: 0 0 20px rgba(59,130,246,0.2); }
+.stat-card.amber .stat-val { color: var(--amber); text-shadow: 0 0 20px rgba(245,158,11,0.2); }
+
+.stat-label {
+  font-size: 13px; color: var(--text-secondary); font-weight: 500;
+  margin-top: 4px;
+}
+.stat-detail {
+  font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);
+  margin-top: 6px;
+}
+
+/* ── Quality bar ── */
+.quality-breakdown {
+  display: flex; gap: 6px; margin-top: 10px;
+}
+.q-bar { height: 5px; border-radius: 3px; flex: 1; }
+.q-bar-a { background: var(--green); }
+.q-bar-b { background: var(--blue); }
+.q-bar-c { background: var(--amber); }
+.q-bar-d { background: var(--red); }
+
+/* ── Section ── */
+.section { margin-bottom: 24px; }
+
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 0; margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-header h2 {
+  font-size: 16px; font-weight: 700; color: #fff;
+  letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;
+}
+.section-header .count {
+  font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);
+  background: var(--bg-card); padding: 3px 10px; border-radius: 10px;
+}
+.section-actions { margin-left: auto; display: flex; gap: 6px; }
+
+/* ── Article Table ── */
+.article-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+.article-table th {
+  text-align: left; padding: 10px 14px;
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 1px;
+  background: var(--bg-card); border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+}
+.article-table td {
+  padding: 10px 14px; font-size: 13px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.article-table tr:last-child td { border-bottom: none; }
+.article-table tr:hover td { background: var(--bg-card-hover); }
+
+.art-num {
+  width: 40px; text-align: center;
+  font-family: var(--font-mono); font-weight: 700; font-size: 12px;
+  color: var(--text-muted);
+}
+.art-title-cell { min-width: 280px; }
+.art-title-link {
+  color: var(--text-primary); text-decoration: none; font-weight: 600;
+  transition: color 0.15s; display: block; max-width: 420px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.art-title-link:hover { color: var(--red); }
+
+/* Grade badge */
+.grade {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 700; font-family: var(--font-mono);
+  min-width: 36px; text-align: center;
+}
+.grade-A { background: rgba(7,193,96,0.15); color: var(--green); }
+.grade-B { background: rgba(59,130,246,0.15); color: var(--blue); }
+.grade-C { background: rgba(245,158,11,0.15); color: var(--amber); }
+
+/* Status badge */
+.status-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: 600;
+}
+.status-ready { background: rgba(7,193,96,0.1); color: var(--green); }
+.status-queued { background: rgba(139,92,246,0.1); color: #a78bfa; }
+.status-draft { background: rgba(138,153,163,0.1); color: var(--text-secondary); }
+
+/* ── Video Grid ── */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.video-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px;
+  display: flex; gap: 14px; align-items: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.video-card:hover {
+  border-color: var(--border-active);
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.video-icon {
+  width: 52px; height: 52px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.video-icon.landscape {
+  background: linear-gradient(135deg, rgba(193,18,31,0.2), rgba(193,18,31,0.08));
+}
+.video-icon.portrait {
+  background: linear-gradient(135deg, rgba(7,193,96,0.2), rgba(7,193,96,0.08));
+}
+
+.video-info { flex: 1; min-width: 0; }
+.video-name {
+  font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 3px;
+  letter-spacing: 0.3px;
+}
+.video-meta {
+  font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);
+  line-height: 1.6;
+}
+.video-meta span { color: var(--text-secondary); font-weight: 600; }
+.video-actions { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+
+.btn-video {
+  padding: 5px 12px; border: 1px solid var(--border);
+  border-radius: 5px; background: var(--bg-card); color: var(--text-secondary);
+  font-size: 11px; cursor: pointer; transition: 0.15s; text-decoration: none;
+  white-space: nowrap; text-align: center; font-weight: 500;
+}
+.btn-video:hover { border-color: var(--red); color: #fff; background: var(--bg-card-hover); }
+
+/* ── Format Tabs / Links ── */
+.format-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.format-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px; text-decoration: none;
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.15s;
+  position: relative; overflow: hidden;
+}
+.format-card:hover {
+  border-color: var(--red);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.format-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--red); border-radius: 0 3px 3px 0;
+}
+.format-icon { font-size: 32px; flex-shrink: 0; }
+.format-info { flex: 1; }
+.format-name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.format-desc { font-size: 12px; color: var(--text-muted); }
+.format-arrow { color: var(--text-muted); font-size: 16px; transition: 0.15s; }
+.format-card:hover .format-arrow { color: var(--red); transform: translateX(4px); }
+
+/* ── Footer ── */
+.footer {
+  text-align: center; padding: 20px 0 0;
+  font-size: 11px; color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+}
+.footer .blink { animation: pulse 2s infinite; color: var(--green); }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+  padding: 10px 24px; background: var(--green-dim); color: var(--green);
+  border: 1px solid var(--green); border-radius: 8px;
+  font-size: 13px; font-weight: 600; z-index: 9999;
+  pointer-events: none; opacity: 0; transition: opacity 0.3s;
+}
+.toast.show { opacity: 1; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-active); }
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .header { flex-direction: column; align-items: flex-start; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .video-grid { grid-template-columns: 1fr; }
+  .article-table { font-size: 12px; }
+  .art-title-link { max-width: 200px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ══════════ HEADER ══════════ -->
+  <header class="header">
+    <div class="header-left">
+      <div class="header-logo">🦞</div>
+      <div class="header-title">
+        <h1>深海浪人鲸鱼 · 内容作战指挥室</h1>
+        <div class="subtitle">Content Command Center</div>
+      </div>
+    </div>
+    <div class="header-status">
+      <span class="status-dot"></span>
+      SYSTEM ONLINE
+    </div>
+  </header>
+
+  <!-- ══════════ STATS ══════════ -->
+  <div class="stats-grid">
+    <div class="stat-card red">
+      <div class="stat-icon">📄</div>
+      <div class="stat-val">28</div>
+      <div class="stat-label">文章总数</div>
+      <div class="stat-detail">自包含 HTML · 全内嵌图片</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon">🎬</div>
+      <div class="stat-val">6</div>
+      <div class="stat-label">渲染视频</div>
+      <div class="stat-detail">横版 Qwen v1-v4 · 竖版 portrait v1-v2</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-icon">🎨</div>
+      <div class="stat-val">3</div>
+      <div class="stat-label">渲染版本</div>
+      <div class="stat-detail">公众号 · TTS 朗读 · 视频脚本</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-icon">📊</div>
+      <div class="stat-val">12.6</div>
+      <div class="stat-label">平均质量分</div>
+      <div class="stat-detail">A 级 20 篇 · B 级 8 篇</div>
+      <div class="quality-breakdown">
+        <div class="q-bar q-bar-a" style="flex:20"></div>
+        <div class="q-bar q-bar-b" style="flex:8"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ARTICLES TABLE ══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <h2>📰 文章清单</h2>
+      <span class="count" id="articleCount">28 篇</span>
+      <div class="section-actions">
+        <button class="btn-video" onclick="quickJump()" title="快速跳转">⌨ 跳转</button>
+      </div>
+    </div>
+
+    <table class="article-table">
+      <thead>
+        <tr>
+          <th style="width:48px">#</th>
+          <th>标题</th>
+          <th style="width:68px">质量</th>
+          <th style="width:68px">状态</th>
+          <th style="width:110px">字/大小</th>
+        </tr>
+      </thead>
+      <tbody id="articleBody">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════ VIDEOS ══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <h2>🎬 渲染视频</h2>
+      <span class="count">6 个文件</span>
+    </div>
+
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="video-icon landscape">🎬</div>
+        <div class="video-info">
+          <div class="video-name">Qwen36 横版 v1</div>
+          <div class="video-meta"><span>4.3 MB</span> · 2026-06-30 20:41</div>
+          <div class="video-meta" style="margin-top:2px;font-size:10px;color:var(--text-muted)">1280×720 · H.264</div>
+        </div>
+        <div class="video-actions">
+          <a class="btn-video" href="qwen36-video.mp4" target="_blank">▶ 播放</a>
+          <a class="btn-video" href="qwen36-video.mp4" download>⬇ 下载</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-icon landscape">🎬</div>
+        <div class="video-info">
+          <div class="video-name">Qwen36 横版 v2</div>
+          <div class="video-meta"><span>5.2 MB</span> · 2026-06-30 20:52</div>
+          <div class="video-meta" style="margin-top:2px;font-size:10px;color:var(--text-muted)">1280×720 · H.264</div>
+        </div>
+        <div class="video-actions">
+          <a class="btn-video" href="qwen36-v2.mp4" target="_blank">▶ 播放</a>
+          <a class="btn-video" href="qwen36-v2.mp4" download>⬇ 下载</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-icon landscape">🎬</div>
+        <div class="video-info">
+          <div class="video-name">Qwen36 横版 v3</div>
+          <div class="video-meta"><span>4.8 MB</span> · 2026-06-30 21:17</div>
+          <div class="video-meta" style="margin-top:2px;font-size:10px;color:var(--text-muted)">1280×720 · H.264</div>
+        </div>
+        <div class="video-actions">
+          <a class="btn-video" href="qwen36-v3.mp4" target="_blank">▶ 播放</a>
+          <a class="btn-video" href="qwen36-v3.mp4" download>⬇ 下载</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-icon landscape">🎬</div>
+        <div class="video-info">
+          <div class="video-name">Qwen36 横版 v4</div>
+          <div class="video-meta"><span>6.3 MB</span> · 2026-06-30 21:21</div>
+          <div class="video-meta" style="margin-top:2px;font-size:10px;color:var(--text-muted)">1280×720 · H.264</div>
+        </div>
+        <div class="video-actions">
+          <a class="btn-video" href="qwen36-v4.mp4" target="_blank">▶ 播放</a>
+          <a class="btn-video" href="qwen36-v4.mp4" download>⬇ 下载</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-icon portrait">📱</div>
+        <div class="video-info">
+          <div class="video-name">Qwen36 竖版 v1</div>
+          <div class="video-meta"><span>7.2 MB</span> · 2026-07-01 01:15</div>
+          <div class="video-meta" style="margin-top:2px;font-size:10px;color:var(--text-muted)">720×1280 · H.264</div>
+        </div>
+        <div class="video-actions">
+          <a class="btn-video" href="qwen36-portrait-v1.mp4" target="_blank">▶ 播放</a>
+          <a class="btn-video" href="qwen36-portrait-v1.mp4" download>⬇ 下载</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-icon portrait">📱</div>
+        <div class="video-info">
+          <div class="video-name">Qwen36 竖版 v2</div>
+          <div class="video-meta"><span>6.9 MB</span> · 2026-07-01 01:19</div>
+          <div class="video-meta" style="margin-top:2px;font-size:10px;color:var(--text-muted)">720×1280 · H.264</div>
+        </div>
+        <div class="video-actions">
+          <a class="btn-video" href="qwen36-portrait-v2.mp4" target="_blank">▶ 播放</a>
+          <a class="btn-video" href="qwen36-portrait-v2.mp4" download>⬇ 下载</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ FORMAT TABS ══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <h2>📝 三合一格式 → <a href="all-formats.html" style="color:var(--red);font-size:14px;text-decoration:none;">all-formats.html</a></h2>
+      <span class="count" style="margin-left:auto">3 种格式</span>
+    </div>
+
+    <div class="format-links">
+      <a class="format-card" href="all-formats.html" onclick="setTabParam(event, 'wechat')">
+        <span class="format-icon">📱</span>
+        <div class="format-info">
+          <div class="format-name">公众号文稿</div>
+          <div class="format-desc">适合直接粘贴到微信公众平台编辑器</div>
+        </div>
+        <span class="format-arrow">→</span>
+      </a>
+
+      <a class="format-card" href="all-formats.html" onclick="setTabParam(event, 'plain')">
+        <span class="format-icon">🎙️</span>
+        <div class="format-info">
+          <div class="format-name">纯文本 · TTS 朗读</div>
+          <div class="format-desc">纯文本格式，适合 TTS 语音合成朗读</div>
+        </div>
+        <span class="format-arrow">→</span>
+      </a>
+
+      <a class="format-card" href="all-formats.html" onclick="setTabParam(event, 'video')">
+        <span class="format-icon">🎬</span>
+        <div class="format-info">
+          <div class="format-name">视频脚本</div>
+          <div class="format-desc">分镜头脚本格式，适合视频配音拍摄</div>
+        </div>
+        <span class="format-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <div class="footer">
+    <span class="blink">▌</span> 深海浪人鲸鱼 · 内容作战指挥室 v1.0 · 2026-07-01
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Article Data (hardcoded from index.html) ──
+const ARTICLES = [
+  { id:'01', num:'01', file:'01-5day-counterintuitive-lessons.html',
+    title:'我让AI自动赚钱系统跑了5天，这5个反直觉发现可能帮你省半年弯路',
+    meta:'1507字 · 360KB', quality:13, grade:'A' },
+  { id:'02', num:'02', file:'02-vibe-coding-division-of-labor.html',
+    title:'Vibe Coding的真正分工：AI写代码，人类写什么？',
+    meta:'1036字 · 238KB', quality:14, grade:'A' },
+  { id:'03', num:'03', file:'03-google-vibe-coding-whitepaper.html',
+    title:'Google内部Vibe Coding白皮书：42%代码已是AI生成',
+    meta:'1002字 · 140KB', quality:11, grade:'B' },
+  { id:'04', num:'04', file:'04-replit-vs-bolt-v3.html',
+    title:'Replit vs Bolt.new v3：谁才是Vibe Coding之王？',
+    meta:'1027字 · 150KB', quality:11, grade:'B' },
+  { id:'05', num:'05', file:'05-indie-dev-distribution-curse.html',
+    title:'独立开发者的分发诅咒：为什么好产品没人用？',
+    meta:'921字 · 108KB', quality:12, grade:'A' },
+  { id:'06', num:'06', file:'06-vibe-coding-hands-on-tutorial.html',
+    title:'Vibe Coding实操教程：从想法到上线的完整路径',
+    meta:'903字 · 151KB', quality:13, grade:'A' },
+  { id:'07', num:'07', file:'07-vibe-coding-chinese-blue-ocean.html',
+    title:'Vibe Coding中文蓝海：为什么现在是入局最佳时机？',
+    meta:'681字 · 111KB', quality:11, grade:'B' },
+  { id:'08', num:'08', file:'08-build-ai-content-system.html',
+    title:'如何搭建自己的AI内容生产系统？',
+    meta:'755字 · 301KB', quality:12, grade:'A' },
+  { id:'09', num:'09', file:'09-xiaomi-mimo-code.html',
+    title:'小米Mimo Code：中国版Devin的野心与挑战',
+    meta:'437字 · 231KB', quality:11, grade:'B' },
+  { id:'10', num:'10', file:'10-vibe-coding-three-forces.html',
+    title:'Vibe Coding三股力量：为什么这股浪潮不会退？',
+    meta:'999字 · 243KB', quality:9, grade:'B' },
+  { id:'11', num:'11', file:'11-sakana-fugu.html',
+    title:'Sakana Fugu：日本AI河豚的野心',
+    meta:'499字 · 253KB', quality:11, grade:'B' },
+  { id:'12', num:'12', file:'12-agent-skills-wrong.html',
+    title:'AI Agent Skills都做错了什么？',
+    meta:'471字 · 142KB', quality:10, grade:'B' },
+  { id:'13', num:'13', file:'13-clevercrow-ai-pr.html',
+    title:'CleverCrow AI PR：AI公关危机的管理与预防',
+    meta:'518字 · 546KB', quality:10, grade:'B' },
+  { id:'14', num:'14', file:'14-ai-writing-7-truths.html',
+    title:'AI写作7个残酷真相：为什么你的AI文章没人看？',
+    meta:'667字 · 147KB', quality:12, grade:'A' },
+  { id:'15', num:'15', file:'15-hidden-costs-content-debt.html',
+    title:'AI内容的隐性成本：内容债务正在吃掉你的效率',
+    meta:'514字 · 161KB', quality:12, grade:'A' },
+  { id:'16', num:'16', file:'16-process-as-product.html',
+    title:'过程即产品：为什么你的系统日志比文章更值钱？',
+    meta:'545字 · 375KB', quality:12, grade:'A' },
+  { id:'17', num:'17', file:'17-distribution-death-loop.html',
+    title:'分发死亡循环：为什么内容创作者的终点不是写？',
+    meta:'574字 · 409KB', quality:12, grade:'A' },
+  { id:'18', num:'18', file:'18-write-but-never-publish.html',
+    title:'AI时代的"写完就算"幻觉——为什么不发出去的写作是自我欺骗',
+    meta:'1,500字 · 151篇→5篇', quality:13, grade:'A' },
+  { id:'19', num:'19', file:'19-vibe-coding-narrative-cycle.html',
+    title:'Vibe Coding叙事周期：从狂热到幻灭只用了3个月',
+    meta:'2,100字 · HN 3107分', quality:14, grade:'A' },
+  { id:'20', num:'20', file:'20-ai-memory-bloat.html',
+    title:'AI记忆文件膨胀——你的助手为什么越来越慢',
+    meta:'1,200字 · 真实数据', quality:13, grade:'A' },
+  { id:'21', num:'21', file:'21-ai-too-smooth.html',
+    title:'为什么AI写的内容"太顺了"反而是问题',
+    meta:'1,000字 · AI写作审美', quality:13, grade:'A' },
+  { id:'22', num:'22', file:'22-real-bottleneck-not-ai.html',
+    title:'我让AI搭了个发布系统——然后发现真正瓶颈不是AI',
+    meta:'1,100字 · 8天21篇', quality:14, grade:'A' },
+  { id:'23', num:'23', file:'23-qwen36-local-ai-iphone-moment.html',
+    title:'893分，Hacker News炸了。一个阿里模型让全球程序员开始抢显卡',
+    meta:'1,400字 · HN 893pts', quality:15, grade:'A' },
+  { id:'24', num:'24', file:'24-local-ai-kills-cloud-subscription.html',
+    title:'OpenAI最怕的不是DeepSeek——是你抽屉里那张吃灰的显卡',
+    meta:'1,500字 · 成本对比', quality:15, grade:'A' },
+  { id:'25', num:'25', file:'25-claude-sonnet5-agent-era.html',
+    title:'Claude Sonnet 5发布了。它最大的突破不是"更聪明"——是"不需要问你"',
+    meta:'1,400字 · Anthropic发布', quality:15, grade:'A' },
+  { id:'26', num:'26', file:'26-spacex-cursor-60b-signal.html',
+    title:'SpaceX花600亿美元买了一个AI编程工具——这是2026年最被低估的信号',
+    meta:'1,400字 · SpaceX/Cursor', quality:15, grade:'A' },
+  { id:'27', num:'27', file:'27-identity-crisis-ai-manager.html',
+    title:'当你不再需要"用"AI的时候——程序员的身份危机刚刚开始',
+    meta:'1,500字 · AI身份转移', quality:15, grade:'A' },
+  { id:'28', num:'28', file:'28-local-ai-personal-data-freedom.html',
+    title:'AI数据不用离开你的电脑了——这是Qwen 3.6被所有人忽略的真正革命',
+    meta:'1,400字 · 本地AI隐私革命', quality:15, grade:'A' }
+];
+
+// ── Render Articles ──
+function renderArticles() {
+  const tbody = document.getElementById('articleBody');
+  tbody.innerHTML = ARTICLES.map((a, i) => {
+    const stateLabel = (i < 17) ? '✅ 已评分' : '📝 已生成';
+    const stateClass = (i < 17) ? 'status-ready' : 'status-queued';
+    return `
+    <tr>
+      <td class="art-num">${a.num}</td>
+      <td class="art-title-cell">
+        <a class="art-title-link" href="${a.file}" target="_blank" title="${a.title}">
+          ${a.title}
+        </a>
+      </td>
+      <td><span class="grade grade-${a.grade}">${a.grade}${a.quality}</span></td>
+      <td><span class="status-badge ${stateClass}">${stateLabel}</span></td>
+      <td style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono)">${a.meta}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Tab param helper ──
+function setTabParam(e, tab) {
+  e.preventDefault();
+  // Open all-formats.html with fragment
+  window.open('all-formats.html#' + tab, '_blank');
+}
+
+// ── Quick jump ──
+function quickJump() {
+  const num = prompt('输入文章编号跳转（01-27）：');
+  if (!num) return;
+  const padded = String(num).padStart(2, '0');
+  const article = ARTICLES.find(a => a.num === padded);
+  if (article) {
+    window.open(article.file, '_blank');
+  } else {
+    const toast = document.getElementById('toast');
+    toast.textContent = '⚠️ 未找到该文章';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+}
+
+// ── Keyboard shortcut ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'g' && e.ctrlKey) {
+    e.preventDefault();
+    quickJump();
+  }
+});
+
+// ── Init ──
+renderArticles();
+</script>
+
+</body>
+</html>

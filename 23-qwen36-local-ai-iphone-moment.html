@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+  }
+  h1 { font-size: 22px; font-weight: bold; line-height: 1.4; margin-bottom: 20px; color: #111; }
+  h2 { font-size: 18px; font-weight: bold; margin: 32px 0 16px; color: #222; }
+  p { margin: 0 0 16px; }
+  blockquote { margin: 16px 0; padding: 10px 16px; border-left: 4px solid #ddd; background: #f7f7f7; color: #666; font-size: 15px; }
+  ul, ol { margin: 0 0 16px; padding-left: 24px; }
+  li { margin-bottom: 6px; }
+  hr { border: none; border-top: 1px solid #e8e8e8; margin: 24px 0; }
+  strong { color: #111; }
+  em { color: #888; }
+  .highlight { background: #fff3cd; padding: 1px 4px; border-radius: 2px; }
+  .big-num { font-size: 36px; font-weight: 700; color: #e17055; display: block; text-align: center; margin: 8px 0; }
+</style>
+</head>
+<body>
+
+<h1>893分，Hacker News炸了。一个阿里模型让全球程序员开始抢显卡</h1>
+
+<p>昨天凌晨，Hacker News的首页被一条帖子统治了。</p>
+
+<p><strong>893分。456条评论。</strong></p>
+
+<p>不是OpenAI的新模型。不是Claude的升级版。是阿里通义千问的Qwen 3.6——一个可以在你笔记本上跑的27B模型。</p>
+
+<p>上一次中国AI模型在Hacker News拿到这个分数，还是DeepSeek R1。那一次，英伟达股价跌了17%。</p>
+
+<p>这一次更狠——因为它告诉你一个事实：<strong>你可能根本不需要为AI付费。</strong></p>
+
+<hr>
+
+<h2>"它是我用过第一个不需要道歉的本地模型"</h2>
+
+<p>说这话的人叫Piotr Migdał，一个波兰程序员。他在Quesma的博客上写了一篇评测，标题就叫"Qwen 3.6 is the sweet spot for local development"。</p>
+
+<p>翻译成中文：<strong>Qwen 3.6就是本地AI开发的甜点。</strong></p>
+
+<p>他过去对本地模型一直很失望。"要么太蠢，要么太慢，要么两者都是。"</p>
+
+<p>然后他装了Qwen 3.6 27B。</p>
+
+<p>"我被震住了。"</p>
+
+<p>他让模型写一首关于Zouk舞和量子物理的八行诗——模型不仅押韵正确，推理过程也完全合理。</p>
+
+<p>他让模型做一个六边形扫雷游戏——一句prompt，一次成功，完整的npm包。</p>
+
+<p>他让模型做一个会议调度器——几分钟跑出一个功能完整的React应用。</p>
+
+<p>"按照当前顶级模型的标准来看，这不算什么。但关键是——<strong>它是一个能在消费级硬件上跑的本地模型。</strong>"</p>
+
+<hr>
+
+<h2>跑在你电脑上，免费，不限量</h2>
+
+<p>这里有一个数字你需要知道：</p>
+
+<p><strong>50 tok/s。</strong></p>
+
+<p>这是Qwen 3.6 27B在一张RTX 5090上的推理速度。和GPT-5.5的API速度差不多。</p>
+
+<p>但GPT-5.5的价格是每100万token输入$1.25，输出$10。</p>
+
+<p>Qwen 3.6跑在本地的价格是：<strong>$0。</strong></p>
+
+<p>不限次数。不限时长。不限用途。你的数据不离开你的电脑。</p>
+
+<p>再看另一个配置：Macbook Max M5，128GB内存。</p>
+
+<ul>
+  <li>Qwen 3.6 27B 8-bit量化：32 tok/s，占用42GB内存</li>
+  <li>Qwen 3.6 35B MoE版本：105 tok/s，占用45GB内存</li>
+</ul>
+
+<p>35B版本快3倍，但27B版本更聪明。Piotr的选择是27B——"我宁愿生成三分之一数量的代码，但质量更高。"</p>
+
+<p>你不需要128GB的Macbook。一张二手的RTX 3090（$600），配上Q4量化，就能跑。一个叫gfosco的Hacker News用户实测：</p>
+
+<blockquote>
+"我今天在5090上设置了Q6_K量化和Q4_0 KV，在123k上下文下稳定跑50 tok/s，用了28/32GB显存。"
+</blockquote>
+
+<hr>
+
+<h2>"No excuses anymore"</h2>
+
+<p>这是Hacker News评论区被点赞最多的一句话。</p>
+
+<p>翻译：<strong>没有借口了。</strong></p>
+
+<p>什么意思？</p>
+
+<p>一年前，本地AI还需要道歉。"它不够聪明""它不能处理复杂任务""它只是个玩具"。</p>
+
+<p>现在，Qwen 3.6 27B在多个基准测试中接近甚至超过了一些商业API模型。它能写代码、能推理、能创作。它不是你"凑合用"的替代品——在很多场景下，它就是正确答案。</p>
+
+<p>Simon Willison——那个用"企鹅骑自行车"测试每个新模型的人——对它印象深刻。他专门写了两篇博客来讨论Qwen 3.6。</p>
+
+<p>另一个Hacker News评论说："It punches above its weight." 重量级选手里最轻的，轻量级选手里最能打的。</p>
+
+<hr>
+
+<h2>这对你意味着什么？</h2>
+
+<p>如果你只是普通用户：现阶段你不需要做任何事。Claude和GPT的API还是更方便。一个月花$20，不折腾。</p>
+
+<p>但如果你是这三类人：</p>
+
+<ol>
+  <li><strong>程序员</strong>——你每天让AI写代码。一个月API账单几百美元。一张显卡的钱半年回本。</li>
+  <li><strong>创业者</strong>——你在做AI相关产品。本地推理意味着零边际成本、零延迟、零数据泄露风险。</li>
+  <li><strong>隐私敏感者</strong>——你的数据不想经过OpenAI或Anthropic的服务器。本地模型是你唯一的选择。</li>
+</ol>
+
+<p>那Qwen 3.6可能就是你一直在等的东西。</p>
+
+<p>部署方式极其简单。用llama.cpp：</p>
+
+<blockquote>
+llama-server -hf unsloth/Qwen3.6-27B-MTP-GGUF:Q8_0 --spec-type draft-mtp -ngl 999 -fa on -c 65536 --port 8080
+</blockquote>
+
+<p>一条命令。然后打开 http://127.0.0.1:8080，你就在自己电脑上跑着一个和GPT-5.5差不多聪明的AI。</p>
+
+<p>如果你用VSCode写代码，配一下OpenCode或者Continue，它就变成了你的本地Copilot。不联网、不收费、不限速。</p>
+
+<hr>
+
+<h2>但这不是一篇教程</h2>
+
+<p>我想说的是一个更大的趋势。</p>
+
+<p>2024年，AI的叙事是"谁能建最大的模型"。</p>
+
+<p>2025年，叙事变成了"谁能把模型做到最便宜"。</p>
+
+<p>2026年6月29日，叙事第三次变了：<strong>"谁需要云端AI？"</strong></p>
+
+<p>Qwen 3.6不是一个孤例。过去三个月，开源模型的进步速度超过了所有人的预期：</p>
+
+<ul>
+  <li>Llama 3.1 8B → Qwen 3.6 27B，性能提升了不止一个量级</li>
+  <li>从"需要数据中心"到"消费级显卡可跑"</li>
+  <li>从"差不多能用"到"不需要道歉"</li>
+</ul>
+
+<p>如果这个趋势再持续8个月，下一代14B模型就能达到今天27B的性能——而14B只需要8GB显存。换句话说，<strong>你现在的Macbook Air就能跑。</strong></p>
+
+<hr>
+
+<h2>最后说一句实话</h2>
+
+<p>这篇文章没有配图。没有产品链接。没有付费内容。</p>
+
+<p>我写它只有一个原因：<strong>过去48小时，全球程序员社区炸了。而中文互联网几乎没人讨论这件事。</strong></p>
+
+<p>阿里做出了可能是2026年最重要的AI模型之一。一个波兰程序员写了评测。Hacker News给了893分。而大多数中国用户还不知道这件事。</p>
+
+<p>如果你觉得这个信息有用，转发给一个朋友。让他们知道：</p>
+
+<p><strong>中国AI，这一次真的不需要道歉。</strong></p>
+
+<hr>
+
+<p><em>深海浪人鲸鱼 | 2026.06.30</em></p>
+<p><em>数据来源：Quesma Blog / Hacker News / Simon Willison博客 / llama.cpp社区</em></p>
+
+</body>
+</html>

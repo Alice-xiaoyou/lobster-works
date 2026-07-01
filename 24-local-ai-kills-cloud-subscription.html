@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+  }
+  h1 { font-size: 22px; font-weight: bold; line-height: 1.4; margin-bottom: 20px; color: #111; }
+  h2 { font-size: 18px; font-weight: bold; margin: 32px 0 16px; color: #222; }
+  p { margin: 0 0 16px; }
+  blockquote { margin: 16px 0; padding: 10px 16px; border-left: 4px solid #ddd; background: #f7f7f7; color: #666; font-size: 15px; }
+  ul, ol { margin: 0 0 16px; padding-left: 24px; }
+  li { margin-bottom: 6px; }
+  hr { border: none; border-top: 1px solid #e8e8e8; margin: 24px 0; }
+  strong { color: #111; }
+  em { color: #888; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { border: 1px solid #e8e8e8; padding: 8px 12px; text-align: left; }
+  th { background: #f5f5f5; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>OpenAI最怕的不是DeepSeek——是你抽屉里那张吃灰的显卡</h1>
+
+<p>昨天我写了一篇关于Qwen 3.6的文章。有人留言说："所以呢？我又不写代码。"</p>
+
+<p>今天这篇就是给你的。</p>
+
+<hr>
+
+<h2>先算一笔所有人都算错过账</h2>
+
+<p>假设你是一个普通的内容创作者。你每天让AI帮你写东西、改东西、想选题、做翻译。一天大概用100万token。</p>
+
+<p>100万token什么概念？差不多是写10篇公众号文章的量。</p>
+
+<p>如果你用Claude：一天$15。一个月$450。一年$5,400。</p>
+
+<p>如果你用GPT-5.5：一天$11。一个月$330。一年$3,960。</p>
+
+<p>现在，另一个方案：</p>
+
+<p><strong>一台二手的RTX 3090，$600。配个电源加机箱，$800。</strong></p>
+
+<p>装上Qwen 3.6。不联网。不付费。不限量。</p>
+
+<p>四个月的Claude订阅费用，买一张能跑三年的显卡。</p>
+
+<p>这个账，任何一个会用Excel的人都能算清楚。</p>
+
+<p>但为什么大部分人不算？</p>
+
+<hr>
+
+<h2>因为互联网公司不让你算</h2>
+
+<p>AI行业的商业模式本质是什么？</p>
+
+<p>不是卖智能。<strong>是卖便利。</strong></p>
+
+<p>你打开浏览器，输入prompt，几秒钟出结果。不用下载模型、不用配环境、不用担心显卡烧了。这份"不用操心"才是他们真正卖的东西。</p>
+
+<p>OpenAI的Sam Altman说过一句话："人们不会为AI本身付费。人们会为AI做的事付费。"</p>
+
+<p>这句话翻译过来是："我们卖的不是模型能力，是让你不用自己跑模型的体验。"</p>
+
+<p>在2024年，这份体验值$20/月。因为当时没有可用的本地替代方案。</p>
+
+<p>在2026年6月30日，这份体验还值$20/月吗？</p>
+
+<hr>
+
+<h2>三件事同时发生了</h2>
+
+<p><strong>第一件事：本地模型从"凑合用"变成了"不用道歉"。</strong></p>
+
+<p>一年前，本地模型的巅峰是Llama 3.1 8B。你让它写个周报还行，让它写代码就各种幻觉。</p>
+
+<p>今天，Qwen 3.6 27B在多项基准测试中接近GPT-5.5。Hacker News 893分的评价是："It punches above its weight"——实力远超它的体型。</p>
+
+<p><strong>第二件事：推理速度从"等一杯咖啡"变成了"跟API差不多"。</strong></p>
+
+<p>Qwen 3.6在一张RTX 5090上跑50 tok/s。在Macbook Max M5上跑32 tok/s。GPT-5.5的API典型速度是多少？30-50 tok/s。</p>
+
+<p>你本地跑的模型，跟花$10/百万token调用的API，速度一样。</p>
+
+<p><strong>第三件事：部署难度从"需要Linux博士学位"变成了"一条命令"。</strong></p>
+
+<p>llama-server -hf unsloth/Qwen3.6-27B-MTP-GGUF:Q8_0 -ngl 999 --port 8080</p>
+
+<p>回车。等几分钟。打开浏览器。你有了自己的AI。</p>
+
+<p>不需要Docker。不需要Python环境。不需要API key。</p>
+
+<hr>
+
+<h2>AI公司的商业模式正在被硬件吃掉</h2>
+
+<p>这不是比喻。这是正在发生的经济现实。</p>
+
+<table>
+  <tr><th>方案</th><th>月成本</th><th>年成本</th><th>三年成本</th></tr>
+  <tr><td>Claude Pro订阅</td><td>$20</td><td>$240</td><td>$720</td></tr>
+  <tr><td>Claude API（日100万token）</td><td>$450</td><td>$5,400</td><td>$16,200</td></tr>
+  <tr><td>GPT-5.5 API（日100万token）</td><td>$330</td><td>$3,960</td><td>$11,880</td></tr>
+  <tr><td><strong>二手RTX 3090 + Qwen 3.6</strong></td><td><strong>$0（电费除外）</strong></td><td><strong>$0</strong></td><td><strong>$600-800（一次性）</strong></td></tr>
+</table>
+
+<p>注意：API方案的价格是2026年6月的价格。但API价格只能往下走，不可能往上涨。</p>
+
+<p>然而——<strong>模型也只会越来越好。硬件也只会越来越便宜。</strong></p>
+
+<p>这场竞赛对云AI公司来说是一个无解的死局：</p>
+
+<ul>
+  <li>API降价 → 赚得更少</li>
+  <li>API不降价 → 用户流向本地模型</li>
+  <li>提高门槛（更大的模型）→ 硬件也在同步变强</li>
+</ul>
+
+<p>唯一的出路是：提供本地模型做不到的东西。比如Agent框架、企业集成、合规认证。</p>
+
+<p>但这已经不是"AI模型"的生意了。这是"AI基础设施"的生意。</p>
+
+<hr>
+
+<h2>现在怎么办？</h2>
+
+<p>如果你是轻度用户——一个月用几次AI写写邮件、查查资料——没必要折腾。$20/月的订阅更方便。你的时间比折腾硬件的钱贵。</p>
+
+<p>如果你是重度用户——每天依赖AI工作、一个月消耗上百万token——现在就是买显卡的最佳时机。</p>
+
+<p><strong>为什么是现在？</strong></p>
+
+<p>因为Qwen 3.6是这个转折点的标志。在它之前，本地AI是"情怀选择"（因为隐私、因为自由、因为不想给大公司送钱）。在它之后，本地AI开始变成"理性选择"（因为更便宜、因为够好用、因为不用排队）。</p>
+
+<p>而且，下一个转折点可能只需要等8个月。按照开源模型过去半年的进步速度——Llama 3.1 8B到Qwen 3.6 27B——下一代14B参数模型就能达到今天27B的性能，而14B只需要8GB显存。</p>
+
+<p>到那时候，<strong>你现在的Macbook Air就能跑一个跟GPT-5.5一样聪明的AI。</strong></p>
+
+<p>不联网。不付费。不限量。</p>
+
+<hr>
+
+<h2>最后说一句大实话</h2>
+
+<p>我没有显卡可以卖。我不拿英伟达的钱。我不做AI部署服务。</p>
+
+<p>我写这篇文章是因为：<strong>2026年最大的科技故事不是"AI有多厉害"，而是"AI正在从少数公司手里被解放出来"。</strong></p>
+
+<p>而大多数人还没意识到这件事。</p>
+
+<p>如果你每个月在AI订阅上花超过$50，这篇文章值一张显卡的差价。</p>
+
+<p>转发给一个还在交AI订阅费的朋友。</p>
+
+<hr>
+
+<p><em>深海浪人鲸鱼 | 2026.06.30</em></p>
+<p><em>数据来源：Quesma Blog / Hacker News / Qwen HuggingFace / OpenRouter定价 / eBay二手显卡价格</em></p>
+
+</body>
+</html>

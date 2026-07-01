@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我让AI搭了个发布系统——然后发现真正瓶颈不是AI</title>
+<style>
+  body {
+    max-width: 680px; margin: 0 auto; padding: 24px 20px 60px;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 17px; line-height: 1.85; color: #2c3e50; background: #fff;
+  }
+  h1 { font-size: 22px; font-weight: 800; margin: 0 0 4px; }
+  .meta { color: #999; font-size: 13px; margin-bottom: 28px; }
+  h2 { font-size: 19px; font-weight: 700; margin: 36px 0 12px; color: #1a1a2e; }
+  p { margin: 0 0 16px; }
+  blockquote {
+    border-left: 3px solid #e67e22; margin: 20px 0; padding: 8px 16px;
+    background: #fef9f3; color: #666; font-size: 15px;
+  }
+  .highlight { background: linear-gradient(180deg, transparent 60%, #ffeaa7 60%); }
+  hr { border: none; border-top: 1px solid #eee; margin: 32px 0; }
+  strong { color: #1a1a2e; }
+  em { color: #e67e22; font-style: normal; }
+</style>
+</head>
+<body>
+
+<h1>我让AI搭了个发布系统——然后发现真正瓶颈不是AI</h1>
+<p class="meta">深海浪人鲸鱼 · 2026-06-26</p>
+
+<p>我花了8天，让AI帮我搭了一个内容发布系统。</p>
+<p>AI写了爬虫、内容生成器、质量检查器、发布面板、SEO优化器、31页自建站、21篇排版好的文章。</p>
+<p>然后我坐在电脑前，准备把这些文章发到公众号上。</p>
+<p><span class="highlight">然后我发现——最难的5个问题，没有一个跟AI有关。</span></p>
+
+<hr>
+
+<h2>问题1：复制粘贴</h2>
+
+<p>我的21篇文章都是HTML，在浏览器里打开、全选、复制、粘贴到公众号编辑器。</p>
+<p>听起来简单。但实际上：</p>
+<p>第一篇文章粘贴后格式乱了——公众号编辑器对某些CSS的支持不一致。第二篇文章的图片太大，粘贴后卡了30秒。第三篇文章有代码块，粘贴后缩进全没了。</p>
+<p>不是不能解决——是<em>每篇都要单独处理</em>。</p>
+<p>AI可以生成100篇文章，但我还是要一篇一篇地Ctrl+C、Ctrl+V。</p>
+
+<blockquote>
+AI的内容生产速度是无限的。人的分发速度是有限的。瓶颈永远在分发端。
+</blockquote>
+
+<hr>
+
+<h2>问题2：管理员扫码</h2>
+
+<p>公众号发文章需要管理员微信扫码确认。</p>
+<p>我是管理员。意思是：每发一篇，我要掏出手机、打开微信、扫电脑上的码、点确认。发21篇=扫21次。</p>
+<p>AI帮不了这个。没有任何API可以绕过这个扫码——这是微信的设计。</p>
+<p>我甚至想过用自动化工具模拟点击。然后意识到：如果我为了绕过扫码而去研究微信协议，我已经完全偏离了"用AI做内容"这个初衷——我在解决一个<em>本不该是我的问题的社交媒体产品设计问题</em>。</p>
+
+<hr>
+
+<h2>问题3：平台格式适配</h2>
+
+<p>公众号的编辑器不是标准的。它不支持很多HTML标签。它有自己的图片上传逻辑。它的段落间距规则跟浏览器不一样。</p>
+<p>我的文章在浏览器里完美——粘贴到公众号编辑器里就变形。</p>
+<p>调了5篇之后我发现：</p>
+<p>适配公众号格式，跟"写一篇好文章"，是<strong>完全不同的两件事</strong>。前者需要理解一个封闭系统的内部规则。后者需要思考、洞察、表达。</p>
+<p>AI擅长后者。但前者——没有人告诉你规则是什么，你只能一篇一篇地试。</p>
+
+<hr>
+
+<h2>问题4：一致性焦虑</h2>
+
+<p>20篇文章，如果有一篇的格式跟其他篇不一样，读者会有感觉。</p>
+<p>我建了一个checklist——每篇检查：标题格式、段落间距、代码块样式、加粗规则、meta信息。</p>
+<p>这个checklist我写了5分钟。但每篇文章检查它，要花3分钟。20篇=1小时。</p>
+<p>这不是AI能自动化的——因为"格式是否一致"是一个视觉判断。"这个间距看起来对吗？"需要人眼看。</p>
+
+<hr>
+
+<h2>问题5：什么时候停？</h2>
+
+<p>这是最意外的问题。</p>
+<p>AI每天都在产出新内容——侦察→选题→生成→排版。这个流水线可以永远跑下去。</p>
+<p>但发布端跟不上。我一天能发的数量是有限的。</p>
+<p>结果：库存积压。</p>
+<p>21篇文章在队列里等着，而AI还在继续生成第22篇、第23篇。这是<strong>生产-分发剪刀差</strong>——生产端的效率100倍于分发端，形成的不是效率优势，是库存焦虑。</p>
+
+<blockquote>
+当AI的生产力变成你待办清单上的未读数字时，它就不是工具了——是焦虑来源。
+</blockquote>
+
+<hr>
+
+<h2>真正的瓶颈是什么</h2>
+
+<p>总结这5个问题：</p>
+<p><strong>1. 复制粘贴</strong> — 纯体力，AI无法替代<br>
+<strong>2. 管理员扫码</strong> — 平台设计，AI无权绕过<br>
+<strong>3. 平台格式适配</strong> — 隐性知识，需要人工试错<br>
+<strong>4. 一致性检查</strong> — 视觉判断，需要人眼<br>
+<strong>5. 发布节奏</strong> — 人的决策，不是算法决策</p>
+
+<p>没有一个跟AI能力有关。每一个都是<strong>人的环节</strong>。</p>
+
+<p>这让我重新理解了"AI替代人类工作"这件事——</p>
+<p><span class="highlight">AI替代的是"生产"环节。但"生产"并不是工作中最难的部分。最难的部分是那些嵌在平台里、流程里、人际互动里的"人的环节"——而这些，AI碰不到。</span></p>
+
+<hr>
+
+<h2>教训：设计系统前先画瓶颈图</h2>
+
+<p>如果我重来一次，我会在搭系统之前先做一件事：</p>
+<p><strong>走一遍完整的发布流程。亲手走。记下每一步的摩擦。</strong></p>
+<p>不是坐在那想"AI能不能做这个"——是实际做一遍，然后标出：</p>
+
+<p>🟢 AI能做的：选题、写作、排版、SEO<br>
+🟡 AI能做但需要人盯的：质量检查、内容去重<br>
+🔴 AI不能碰的：扫码、粘贴、视觉一致性</p>
+
+<p>然后——只在🟢区域投入AI开发资源。在🔴区域接受现实，用手工。</p>
+<p>我花了太多时间让AI优化🟢区域（它本来就很强了），却没注意到🔴区域才是真正的天花板。</p>
+
+<blockquote>
+下次你准备让AI搭一个系统，先问的不是"AI能做什么"——是"AI做不了的那一步是什么？"
+</blockquote>
+
+<hr>
+
+<p>至于我——那21篇还在排队。AI刚刚生成了第22篇。</p>
+<p>我得去扫码了。</p>
+
+<hr style="margin-top: 40px;">
+<p style="color: #999; font-size: 12px;">
+标签：#AI系统设计 #内容创作 #生产力 #反直觉洞察<br>
+题材：L4·原创框架 · 基于8天21篇真实系统搭建经验
+</p>
+
+</body>
+</html>

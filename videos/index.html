@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦞 视频发布面板</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0a0a0f; color: #e0e0e8; padding: 32px 20px 60px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 24px; color: #f0f0f5; margin-bottom: 4px; }
+  .sub { color: #666680; font-size: 13px; margin-bottom: 20px; }
+
+  /* Nav */
+  .nav {
+    display: flex; gap: 12px; margin-bottom: 24px;
+  }
+  .nav a {
+    padding: 8px 20px; border-radius: 8px;
+    font-size: 14px; font-weight: 500; text-decoration: none;
+    background: #1a1a28; color: #8888a0; transition: 0.15s;
+  }
+  .nav a:hover { background: #252540; color: #c0c0d8; }
+  .nav a.active { background: #ff8c42; color: #0a0a0f; }
+
+  /* Stats */
+  .stats-bar {
+    background: #1a1a28; border-radius: 12px; padding: 20px 24px;
+    margin-bottom: 24px;
+    display: flex; gap: 32px; align-items: center; flex-wrap: wrap;
+  }
+  .stat { text-align: center; flex: 1; min-width: 60px; }
+  .stat .val { font-size: 28px; font-weight: 700; color: #ff8c42; }
+  .stat .lbl { font-size: 11px; color: #666680; margin-top: 2px; }
+
+  /* Card */
+  .card {
+    background: #1a1a28; border-radius: 12px; padding: 20px 24px;
+    margin-bottom: 14px; display: flex; align-items: center; gap: 16px;
+    transition: background 0.15s; border-left: 3px solid transparent;
+  }
+  .card.published { border-left-color: #ff8c42; background: #1f1a18; }
+  .card:hover { background: #222240; }
+
+  .num {
+    width: 36px; height: 36px; border-radius: 50%; background: #252540;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #8888a0; flex-shrink: 0;
+  }
+  .published .num { background: #3d2a18; color: #ff8c42; }
+
+  .info { flex: 1; min-width: 0; }
+  .title {
+    font-size: 16px; font-weight: 600; color: #f0f0f5; margin-bottom: 4px;
+  }
+  .meta { font-size: 12px; color: #666680; }
+
+  .status {
+    font-size: 11px; padding: 4px 12px; border-radius: 20px;
+    font-weight: 500; cursor: pointer; user-select: none; flex-shrink: 0;
+    border: 1px solid transparent; transition: 0.15s;
+  }
+  .status.pending { background: #252540; color: #666680; border-color: #3d3d5c; }
+  .status.pending:hover { background: #3d2a18; color: #ff8c42; border-color: #ff8c42; }
+  .status.published { background: #3d2a18; color: #ff8c42; border-color: #ff8c42; }
+  .status.rendered { background: #183d2a; color: #42ff8c; border-color: #42ff8c; }
+  .status.rendering { background: #2a2a18; color: #ffd642; border-color: #ffd642; }
+  .status.failed { background: #3d1818; color: #ff4242; border-color: #ff4242; }
+
+  .btn-group { display: flex; gap: 6px; flex-shrink: 0; }
+  .btn {
+    padding: 7px 16px; border: none; border-radius: 8px;
+    font-size: 12px; font-weight: 500; cursor: pointer; transition: 0.15s;
+  }
+  .btn.play-btn { background: #ff8c42; color: #0a0a0f; }
+  .btn.play-btn:hover { background: #ff9d5c; }
+  .btn.play-btn:disabled { background: #3d3d5c; color: #666680; cursor: not-allowed; }
+  .btn.render-btn { background: #252540; color: #8888a0; border: 1px solid #3d3d5c; }
+  .btn.render-btn:hover { background: #3d3d5c; color: #c0c0d8; }
+
+  video { max-width: 100%; border-radius: 8px; }
+
+  .tips {
+    margin-top: 28px; padding: 16px 20px; background: #1a1a28;
+    border-radius: 10px; border: 1px solid #2a2a3c;
+    font-size: 12px; color: #8888a0; line-height: 1.9;
+  }
+  .tips strong { color: #ff8c42; }
+  .tips code { background: #252540; padding: 2px 6px; border-radius: 4px; font-size: 11px; color: #c0c0d8; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🦞 视频发布面板</h1>
+  <p class="sub">HyperFrames 视频项目 · 渲染 → 发布到视频号</p>
+
+  <div class="nav">
+    <a href="../wechat-drafts/wechat-publish/index.html">📝 文章面板</a>
+    <a href="#" class="active">🎬 视频面板</a>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat"><div class="val" id="statTotal">0</div><div class="lbl">项目总数</div></div>
+    <div class="stat"><div class="val" id="statRendered">0</div><div class="lbl">已渲染</div></div>
+    <div class="stat"><div class="val" id="statPublished">0</div><div class="lbl">已发布</div></div>
+  </div>
+
+  <!-- Video list -->
+  <div id="videoList"></div>
+
+  <div class="tips">
+    <strong>🎬 工作流程</strong><br>
+    · <strong>点「渲染」</strong> → HyperFrames 渲染视频（后台运行，约30-120秒）<br>
+    · <strong>点「预览」</strong> → 查看 HTML 源码预览（浏览器新标签页）<br>
+    · <strong>渲染完成后</strong> → 点「播放」查看视频文件<br>
+    · <strong>点「✅」</strong> → 标记为已发布到视频号<br>
+    <br>
+    <strong>🔧 自动化命令</strong><br>
+    · 渲染单个: <code>cd videos/projects/项目名 && npx hyperframes render</code><br>
+    · 批量渲染: <code>./render-all.sh</code><br>
+    · 新项目: <code>npx hyperframes init videos/projects/新项目名</code>
+  </div>
+</div>
+
+<script>
+const VIDEOS = [
+  {
+    id: 'v01',
+    num: '01',
+    name: 'qwen36-explainer',
+    title: '阿里闷声干了件大事 — Qwen 3.6 本地AI',
+    meta: '28秒 · 4场景 · HN 893pts · 本地AI甜点',
+    duration: '0:28'
+  },
+  {
+    id: 'v02',
+    num: '02',
+    name: 'dotself-reclaim-internet',
+    title: '.self域名 — 互联网正在夺回自己的家',
+    meta: '28秒 · 4场景 · HN 494pts · 去中心化宣言',
+    duration: '0:28'
+  }
+];
+
+const STORE_KEY = 'video_publish_store_v1';
+
+function loadStore() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STORE_KEY)) || {};
+    // Seed: rendered videos
+    if (!s.v01) {
+      s.v01 = { status: 'rendered', renderPath: 'projects/qwen36-explainer/renders/qwen36-explainer_2026-06-30_01-56-01.mp4' };
+      saveStore(s);
+    }
+    if (!s.v02) {
+      s.v02 = { status: 'rendered', renderPath: 'projects/dotself-reclaim-internet/renders/dotself-reclaim-internet_2026-06-30_01-58-32.mp4' };
+      saveStore(s);
+    }
+    return s;
+  }
+  catch { return {}; }
+}
+function saveStore(s) { localStorage.setItem(STORE_KEY, JSON.stringify(s)); }
+
+function getStatus(id) {
+  const s = loadStore();
+  return (s[id] && s[id].status) ? s[id].status : 'pending';
+}
+
+function getRenderPath(id) {
+  const s = loadStore();
+  return (s[id] && s[id].renderPath) ? s[id].renderPath : null;
+}
+
+function render() {
+  const store = loadStore();
+  const list = document.getElementById('videoList');
+
+  list.innerHTML = VIDEOS.map(v => {
+    const status = getStatus(v.id);
+    const renderPath = getRenderPath(v.id);
+    const statusLabels = { pending: '⏳ 待渲染', rendering: '🔄 渲染中', rendered: '✅ 已渲染', published: '📤 已发布', failed: '❌ 失败' };
+    const statusClass = status;
+
+    return `
+    <div class="card ${status === 'published' || status === 'rendered' ? 'published' : ''}" data-id="${v.id}">
+      <span class="status ${statusClass}" onclick="toggleStatus(event, '${v.id}')">${statusLabels[status] || status}</span>
+      <div class="num">${v.num}</div>
+      <div class="info">
+        <div class="title">${v.title}</div>
+        <div class="meta">${v.meta} · ⏱ ${v.duration}</div>
+      </div>
+      <div class="btn-group">
+        <button class="btn play-btn" ${!renderPath ? 'disabled' : ''}
+          onclick="playVideo('${renderPath || ''}')">▶ 播放</button>
+        <button class="btn render-btn" onclick="renderVideo('${v.name}', this)">🎬 渲染</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Stats
+  const total = VIDEOS.length;
+  const rendered = VIDEOS.filter(v => ['rendered','published'].includes(getStatus(v.id))).length;
+  const published = VIDEOS.filter(v => getStatus(v.id) === 'published').length;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statRendered').textContent = rendered;
+  document.getElementById('statPublished').textContent = published;
+}
+
+function toggleStatus(e, id) {
+  e.stopPropagation();
+  const s = loadStore();
+  const current = getStatus(id);
+  const cycle = { pending: 'published', published: 'pending', rendered: 'published', failed: 'pending' };
+  if (!s[id]) s[id] = {};
+  s[id].status = cycle[current] || 'pending';
+  saveStore(s);
+  render();
+}
+
+function playVideo(path) {
+  if (path) window.open(path, '_blank');
+}
+
+function renderVideo(name, btn) {
+  const origText = btn.textContent;
+  btn.textContent = '🔄 渲染中...';
+  btn.disabled = true;
+
+  const s = loadStore();
+  // Find the video entry
+  const vid = VIDEOS.find(v => v.name === name);
+  if (vid && !s[vid.id]) s[vid.id] = {};
+  if (vid) s[vid.id].status = 'rendering';
+  saveStore(s);
+  render();
+
+  // Call the render API
+  fetch('/api/render', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ project: name })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (vid) {
+      if (data.success) {
+        s[vid.id].status = 'rendered';
+        s[vid.id].renderPath = data.path;
+      } else {
+        s[vid.id].status = 'failed';
+        s[vid.id].error = data.error;
+      }
+      saveStore(s);
+      render();
+    }
+    btn.textContent = origText;
+    btn.disabled = false;
+  })
+  .catch(err => {
+    if (vid) {
+      s[vid.id].status = 'failed';
+      s[vid.id].error = err.message;
+      saveStore(s);
+      render();
+    }
+    btn.textContent = origText;
+    btn.disabled = false;
+  });
+}
+
+render();
+</script>
+</body>
+</html>

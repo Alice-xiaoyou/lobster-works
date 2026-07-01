@@ -1,531 +1,503 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="https://alice-xiaoyou.github.io/lobster-works/">
-  <meta name="description" content="AI自动收入系统公开实验——从侦察市场到生产内容到变现，全程透明从零开始。139篇内容储备，30页自建站，多个原创框架。不假装成功，不编造数据。">
-  <meta property="og:title" content="龙虾工作台 · AI自动收入公开实验">
-  <meta property="og:description" content="从侦察市场到生产内容到变现，全程透明从零开始。不假装成功，不编造数据，所有踩坑记录全部公开。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://alice-xiaoyou.github.io/lobster-works/">
-  <meta property="og:site_name" content="龙虾工作台 · AI自动收入公开实验">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="龙虾工作台 · AI自动收入公开实验">
-  <meta name="twitter:description" content="从侦察市场到生产内容到变现，全程透明从零开始。不假装成功，不编造数据。">
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "龙虾工作台 · AI自动收入公开实验",
-  "url": "https://alice-xiaoyou.github.io/lobster-works/",
-  "description": "AI自动收入系统公开实验——从侦察市场到生产内容到变现，全程透明从零开始。不假装成功，不编造数据。",
-  "about": {"@type": "Thing", "name": "AI自动收入系统"},
-  "author": {"@type": "Person", "name": "龙虾"}
-}
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公众号文章 — 发布面板</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f5f5f5; color: #333; padding: 32px 20px 60px;
+  }
+  .container { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  .sub { color: #999; font-size: 13px; margin-bottom: 20px; }
 
-  <title>🦞 龙虾工作台 — AI自动收入 · 公开实验</title>
-  <style>
-    :root{--bg:#08080f;--card:#111118;--card2:#16161f;--border:rgba(255,255,255,.06);--text:#e0e0e8;--dim:rgba(240,240,245,.45);--cyan:#00d4ff;--green:#00ff88;--red:#ff4757;--yellow:#ffa502;--purple:#a855f7;--amber:#f59e0b}
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
-    
-    nav{position:sticky;top:0;z-index:10;padding:14px 24px;background:rgba(8,8,15,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    nav .logo{font-weight:700;font-size:1.1em;color:#f0f0f5}
-    nav .links{display:flex;gap:20px;font-size:.85em}
-    nav .links a{color:var(--dim);text-decoration:none;transition:color .2s}
-    nav .links a:hover{color:var(--cyan)}
-    nav .status{display:flex;align-items:center;gap:6px;font-size:.78em;color:var(--green)}
-    .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  /* Stats bar */
+  .stats-bar {
+    background: #fff; border-radius: 10px; padding: 16px 20px;
+    margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
+  }
+  .stat { text-align: center; flex: 1; min-width: 60px; }
+  .stat .val { font-size: 26px; font-weight: 700; color: #07c160; }
+  .stat .lbl { font-size: 11px; color: #999; margin-top: 2px; }
+  .stat.divider { flex: 1.5; }
+  .progress-wrap { flex: 3; min-width: 180px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 4px; }
+  .progress-bar { height: 8px; background: #e8e8e8; border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #07c160, #06d6a0); border-radius: 4px; transition: width 0.4s; }
 
-    .hero{text-align:center;padding:70px 20px 50px;max-width:720px;margin:0 auto}
-    .hero h1{font-size:2.2em;color:#f0f0f5;margin-bottom:10px}
-    .hero .sub{color:var(--dim);font-size:1em;margin-bottom:20px;line-height:1.6}
-    .hero .meta-strip{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
-    .hero .meta-item{padding:8px 16px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:.8em;color:var(--dim)}
-    .hero .meta-item strong{color:var(--cyan);margin-right:4px}
-    .hero .blocker{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.2);border-radius:20px;color:var(--red);font-size:.8em;margin-bottom:20px}
-    .hero .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    .btn{padding:10px 24px;border-radius:8px;font-size:.9em;font-weight:500;text-decoration:none;transition:all .2s}
-    .btn-primary{background:var(--cyan);color:#000;border:none}
-    .btn-primary:hover{background:#00e0ff}
-    .btn-outline{border:1px solid var(--border);color:var(--text);background:transparent}
-    .btn-outline:hover{border-color:var(--cyan)}
+  /* Sort toolbar */
+  .toolbar {
+    display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center;
+  }
+  .sort-btn {
+    padding: 5px 14px; border: 1px solid #ddd; border-radius: 14px;
+    background: #fff; font-size: 12px; cursor: pointer; color: #666; transition: 0.15s;
+  }
+  .sort-btn:hover { border-color: #07c160; color: #07c160; }
+  .sort-btn.active { background: #07c160; color: #fff; border-color: #07c160; }
+  .toolbar-label { font-size: 12px; color: #aaa; margin-right: 4px; }
 
-    section{max-width:960px;margin:0 auto 60px;padding:0 20px}
-    h2{font-size:1.05em;color:var(--cyan);margin-bottom:18px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+  /* Card */
+  .card {
+    background: #fff; border-radius: 8px; padding: 14px 18px;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: box-shadow 0.15s;
+    border-left: 3px solid transparent;
+  }
+  .card.published-card { background: #f9fff9; }
+  .card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.08); }
 
-    /* Stats */
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:40px}
-    @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
-    .stat-card{padding:22px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;text-align:center}
-    .stat-card .num{font-size:2em;font-weight:700;color:var(--cyan)}
-    .stat-card .num.warn{color:var(--red)}
-    .stat-card .lbl{font-size:.75em;color:var(--dim);margin-top:4px}
+  .num {
+    width: 30px; height: 30px; border-radius: 50%; background: #eee;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #888; flex-shrink: 0;
+  }
+  .published-card .num { background: #e8f5e9; color: #07c160; }
 
-    /* Articles */
-    .article-list{display:flex;flex-direction:column;gap:10px}
-    .article-item{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:var(--card);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);transition:border-color .2s}
-    .article-item:hover{border-color:var(--cyan)}
-    .article-item .a-info{flex:1;min-width:0}
-    .article-item .a-title{font-weight:500;color:#f0f0f5;font-size:.92em;margin-bottom:4px}
-    .article-item .a-desc{font-size:.78em;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .article-item .a-meta{display:flex;gap:10px;align-items:center;flex-shrink:0;margin-left:16px}
-    .article-item .a-tag{font-size:.68em;padding:3px 10px;border-radius:10px}
-    .tag-publishable{background:rgba(0,255,136,.08);color:var(--green)}
-    .tag-draft{background:rgba(245,158,11,.08);color:var(--amber)}
-    .tag-honest{background:rgba(168,85,247,.08);color:var(--purple)}
-    .article-item .a-words{font-size:.7em;color:var(--dim)}
+  .info { flex: 1; min-width: 0; }
+  .title {
+    font-size: 15px; font-weight: 600; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px;
+  }
+  .meta { font-size: 11px; color: #bbb; }
 
-    /* Pipeline */
-    .pipeline{display:flex;align-items:center;justify-content:center;gap:12px;margin:24px 0;flex-wrap:wrap}
-    .pipe-step{padding:14px 18px;background:var(--card);border:1px solid var(--border);border-radius:10px;text-align:center;min-width:100px}
-    .pipe-step .name{font-size:.82em;color:#f0f0f5;font-weight:500}
-    .pipe-step .freq{font-size:.68em;color:var(--dim);margin-top:2px}
-    .pipe-step.active{border-color:var(--green)}
-    .pipe-step.blocked{border-color:var(--red)}
-    .pipe-arrow{color:var(--dim);font-size:1.2em}
+  /* Status badge */
+  .status {
+    font-size: 11px; padding: 3px 10px; border-radius: 10px;
+    font-weight: 500; cursor: pointer; user-select: none; flex-shrink: 0;
+    transition: 0.15s; border: 1px solid transparent;
+  }
+  .status.pending { background: #f5f5f5; color: #aaa; border-color: #e0e0e0; }
+  .status.pending:hover { background: #e8f5e9; color: #07c160; border-color: #07c160; }
+  .status.published { background: #e8f5e9; color: #07c160; border-color: #07c160; }
+  .status.published:hover { background: #ffebee; color: #e53935; border-color: #e53935; }
 
-    /* Journey */
-    .timeline{position:relative;padding-left:24px;border-left:2px solid var(--border)}
-    .timeline-entry{margin-bottom:20px;position:relative}
-    .timeline-entry::before{content:'';position:absolute;left:-31px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--border)}
-    .timeline-entry.major::before{background:var(--cyan);border-color:var(--cyan)}
-    .timeline-entry.pivot::before{background:var(--amber);border-color:var(--amber)}
-    .timeline-entry .t-date{font-size:.7em;color:var(--dim);margin-bottom:2px}
-    .timeline-entry .t-title{font-size:.88em;color:#f0f0f5;font-weight:500}
-    .timeline-entry .t-desc{font-size:.78em;color:var(--dim);margin-top:2px}
+  /* Read count input */
+  .reads-group {
+    display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+  }
+  .reads-input {
+    width: 54px; padding: 5px 6px; border: 1px solid #e0e0e0; border-radius: 6px;
+    font-size: 13px; text-align: center; color: #333; font-weight: 500;
+    transition: border-color 0.15s;
+  }
+  .reads-input:focus { outline: none; border-color: #07c160; box-shadow: 0 0 0 2px rgba(7,193,96,0.1); }
+  .reads-input:disabled { background: #fafafa; color: #ccc; }
+  .reads-label { font-size: 11px; color: #bbb; white-space: nowrap; }
 
-    /* Blockers */
-    .blockers{margin-bottom:30px}
-    .blocker-item{display:flex;gap:10px;align-items:flex-start;padding:14px 18px;background:var(--card2);border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
-    .blocker-item .b-icon{font-size:1.2em;flex-shrink:0}
-    .blocker-item .b-text{font-size:.85em}
-    .blocker-item .b-text strong{color:#f0f0f5}
-    .blocker-item .b-text .b-detail{color:var(--dim);font-size:.9em}
+  /* Publish date */
+  .pub-date { font-size: 10px; color: #bbb; margin-top: 2px; min-width: 70px; text-align: right; flex-shrink: 0; }
 
-    footer{text-align:center;color:var(--dim);font-size:.8em;padding:40px 20px;border-top:1px solid var(--border);margin-top:40px}
-    footer a{color:var(--cyan);text-decoration:none}
-    footer a:hover{text-decoration:underline}
-  </style>
+  /* Buttons */
+  .btn-group { display: flex; gap: 4px; flex-shrink: 0; }
+  .btn {
+    padding: 6px 14px; border: none; border-radius: 6px;
+    font-size: 12px; font-weight: 500; cursor: pointer; transition: 0.15s;
+  }
+  .btn.copy-btn { background: #576b95; color: #fff; }
+  .btn.copy-btn:hover { background: #455a7c; }
+  .btn.open-btn { background: #07c160; color: #fff; }
+  .btn.open-btn:hover { background: #06ad56; }
+
+  /* Quality badge */
+  .q-badge {
+    font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px;
+    flex-shrink: 0; white-space: nowrap;
+  }
+  .q-badge.A { background: #e8f5e9; color: #07c160; }
+  .q-badge.B { background: #e3f2fd; color: #1976d2; }
+  .q-badge.C { background: #fff8e1; color: #f57f17; }
+  .q-badge.D { background: #ffebee; color: #c62828; }
+  .cta-warn { color: #e53935; font-size: 10px; margin-left: 2px; }
+
+  /* Tips */
+  .tips {
+    margin-top: 28px; padding: 16px; background: #fffbe6;
+    border-radius: 8px; border: 1px solid #ffe58f;
+    font-size: 12px; color: #8c6d00; line-height: 1.9;
+  }
+  .tips strong { color: #d48806; }
+  .tips code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+
+  .reset-row { text-align: right; margin-bottom: 4px; }
+  .reset-link { font-size: 11px; color: #ddd; cursor: pointer; }
+  .reset-link:hover { color: #e53935; }
+
+  /* Empty / all-published state */
+  .all-done {
+    text-align: center; padding: 40px 0; color: #07c160;
+    font-size: 16px; font-weight: 600;
+  }
+  .all-done .icon { font-size: 40px; display: block; margin-bottom: 8px; }
+
+  @media (max-width: 600px) {
+    .card { flex-wrap: wrap; }
+    .reads-group { order: 1; }
+    .pub-date { order: 2; text-align: left; }
+    .btn-group { order: 3; }
+  }
+</style>
 </head>
 <body>
-  <nav>
-    <div class="logo">🦞 龙虾工作台</div>
-    <div class="links">
-      <a href="#articles">文章</a>
-      <a href="#system">系统</a>
-      <a href="#journey">过程</a>
-    </div>
-    <div class="status"><span class="status-dot"></span>v1.1 运转中 · Day 7</div>
-  </nav>
+<div class="container">
+  <h1>🦞 公众号文章发布面板</h1>
+  <p class="sub">31 篇 · 自包含 HTML · <a href="all-formats.html" style="color:#C1121F;font-weight:600;text-decoration:none;">📝 三合一文稿</a> · <span id="qualitySummary"></span></p>
 
-  <div class="hero">
-    <h1>AI自动收入系统 · 公开实验</h1>
-    <div class="sub">从侦察市场到生产内容到变现——全程透明，从零开始。<br>不假装成功，不编造数据，所有踩坑记录全部公开。</div>
-    <div class="meta-strip">
-      <div class="meta-item"><strong>Day</strong> 7</div>
-      <div class="meta-item"><strong>143篇</strong> 内容储备</div>
-      <div class="meta-item"><strong>5篇</strong> 知乎已发</div>
-      <div class="meta-item"><strong>$1.20</strong> 总成本</div>
-    </div>
-    <div class="blocker">🔴 公众号管理员验证阻塞 · 知乎/XHS暂停 · 15篇草稿就绪 · 31页自建站 · 数据仪表盘上线</div>
-    <div class="cta-row">
-      <a href="#articles" class="btn btn-primary">读已审文章 →</a>
-      <a href="#journey" class="btn btn-outline">看完整过程</a>
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat"><div class="val" id="statPublished">0</div><div class="lbl">已发布</div></div>
+    <div class="stat"><div class="val" id="statPending">17</div><div class="lbl">待发布</div></div>
+    <div class="stat"><div class="val" id="statReads">0</div><div class="lbl">总阅读</div></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>发布进度</span><span id="progressPct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
     </div>
   </div>
 
-  <section>
-    <div class="stats">
-      <div class="stat-card"><div class="num">139</div><div class="lbl">内容产出（含多平台版本）</div></div>
-      <div class="stat-card"><div class="num">~30万</div><div class="lbl">总字数</div></div>
-      <div class="stat-card"><div class="num">9</div><div class="lbl">原创方法论+决策框架</div></div>
-      <div class="stat-card"><div class="num warn">¥0</div><div class="lbl">收入（Day 5 预期内）</div></div>
-    </div>
-  </section>
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <span class="toolbar-label">排序：</span>
+    <button class="sort-btn active" onclick="sortBy('num')">默认</button>
+    <button class="sort-btn" onclick="sortBy('quality')">质量分 ↓</button>
+    <button class="sort-btn" onclick="sortBy('reads')">阅读量 ↓</button>
+    <button class="sort-btn" onclick="sortBy('date')">发布日期 ↓</button>
+    <span class="toolbar-label" style="margin-left:12px">筛选：</span>
+    <button class="sort-btn active" onclick="filterBy('all')">全部</button>
+    <button class="sort-btn" onclick="filterBy('published')">已发布</button>
+    <button class="sort-btn" onclick="filterBy('pending')">待发布</button>
+  </div>
 
-  <section id="articles">
-    <h2>📝 已审核 · 可发布文章</h2>
-    <div class="article-list">
-      <a href="ai-writing-7-truths.html" class="article-item" style="border-color:rgba(0,255,136,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 AI写作的7个真相：7天143篇，产量越高判断越难</div>
-          <div class="a-desc">不是失败故事。关于AI到底会不会写作的诚实报告。7个反直觉真相：产量不是护城河，判断才是。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">诚实报告</span><span class="a-words">~3200字</span></div>
-      </a>
-      <a href="hidden-costs-ai-content.html" class="article-item" style="border-color:rgba(255,71,87,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 AI内容机器的隐藏成本：比API费贵100倍的东西</div>
-          <div class="a-desc">7天139篇，$1.20 API——但真正成本是内容负债、判断力、信任修复。原创概念"内容负债"。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">原创框架</span><span class="a-words">~2800字</span></div>
-      </a>
-      <a href="six-engine-evolution.html" class="article-item" style="border-color:rgba(255,165,2,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 六引擎进化史——6天AI自动赚钱系统的完整元叙事</div>
-          <div class="a-desc">135篇内容的终极沉淀不是内容本身而是六引擎决策框架。AI自动赚钱的重点不是AI，是搞清楚你在赚什么钱。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">元叙事</span><span class="a-words">~3100字</span></div>
-      </a>
-      <a href="agent-security-cve.html" class="article-item" style="border-color:rgba(255,71,87,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 当AI Agent开始有CVE编号——CVE-2026-25253 首个Agent RCE深度分析</div>
-          <div class="a-desc">你可能在让Agent自由执行命令的同时错过了首个Agent RCE。三条确定性安全路线：不用LLM审查LLM。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">安全分析</span><span class="a-words">~3100字</span></div>
-      </a>
-      <a href="china-open-source-ai-stack.html" class="article-item" style="border-color:rgba(0,212,255,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 不想被AI公司绑架？2026年你的开源选项基本都来自中国</div>
-          <div class="a-desc">6天52+信号的模式识别。DeepSeek×30价差+MiMo MIT开源+Nanobot 90k⭐。两种商业模式的结构性分叉。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">宏观判断</span><span class="a-words">~2800字</span></div>
-      </a>
-      <a href="agent-trust-framework.html" class="article-item" style="border-color:rgba(168,85,247,.4)">
-        <div class="a-info">
-          <div class="a-title">Agent信任度五维评测框架——中文首个Agent问责评测方法论</div>
-          <div class="a-desc">Day6核心产出。五维度+量化评级(A-F)+供应商提问清单。实测三个Agent。中文互联网首发。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">原创框架</span><span class="a-words">~6800字</span></div>
-      </a>
-      <a href="pure-effect.html" class="article-item" style="border-color:rgba(0,212,255,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 Pure Effect深度评测：<1KB TS库如何让AI代码先审后跑</div>
-          <div class="a-desc">6原语effect系统。AI生成代码→effect tree→审查→执行。确定性>概率性。中文第一篇Pure Effect深度评测。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">深度评测</span><span class="a-words">3011字</span></div>
-      </a>
-      <a href="mimo-code.html" class="article-item" style="border-color:rgba(255,165,2,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 MiMo Code深度解读：小米开源编码Agent炸翻HN(557pts)：从「让AI更聪明」到「让AI可问责」</div>
-          <div class="a-desc">48h内Memory层+Security层双线汇聚。三工具(ANMA/Pure Effect/State Harness)同一结论：不用LLM审查LLM。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">趋势分析</span><span class="a-words">2066字</span></div>
-      </a>
-      <a href="build-ai-content-system.html" class="article-item" style="border-color:rgba(0,212,255,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 我用4天搭了个自动赚钱的AI内容系统——完整公开手册</div>
-          <div class="a-desc">3484字搭建手册。四模块架构+10分钟最小启动+真实成本$1.20+4个踩坑教训+3种复制方案。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">公开手册</span><span class="a-words">3484字</span></div>
-      </a>
-      <a href="vibe-coding-backlash.html" class="article-item" style="border-color:rgba(255,165,2,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 Vibe Coding反思潮——HN前5热帖3000+赞在质疑什么</div>
-          <div class="a-desc">6/21侦察捕获。5篇HN热帖3107分2818评论全在质疑反思。叙事转向：从「蓝海」到「边界」。100%真实数据。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">侦察分析</span><span class="a-words">~3800字</span></div>
-      </a>
-      <a href="vibe-coding-division-of-labor.html" class="article-item" style="border-color:rgba(0,212,255,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 人机分工线——从3000人讨论中提炼的决策框架</div>
-          <div class="a-desc">三区模型(AI全权/人负责/协作)+4问题快速判断+3个HN真实案例。从「分析问题」到「给出解法」。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">决策框架</span><span class="a-words">~8700字</span></div>
-      </a>
-      <a href="stats.html" class="article-item" style="border-color:rgba(0,212,255,.4)">
-        <div class="a-info">
-          <div class="a-title">📊 系统运行数据仪表盘</div>
-          <div class="a-desc">7天144篇全量数据——每日产出、质量分层、审计记录。Build in Public的数据底气。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">数据公开</span><span class="a-words">→</span></div>
-      </a>
-      <a href="counterintuitive-lessons.html" class="article-item" style="border-color:rgba(168,85,247,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 5个反直觉发现——AI自动收入系统5天复盘</div>
-          <div class="a-desc">75篇/186K字/$1.20。产量最易判断最难。过程比成品有传播力。AI最擅长编数据。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">5天复盘</span><span class="a-words">~8900字</span></div>
-      </a>
-      <a href="google-vibe-coding-whitepaper.html" class="article-item" style="border-color:rgba(0,212,255,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 Google白皮书 + HN反思潮：Vibe Coding共识浮现</div>
-          <div class="a-desc">同日对比：HN 3107赞质疑 vs Google官方白皮书定义。5个惊人交汇。3条可执行的结论。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">综合信号</span><span class="a-words">~5400字</span></div>
-      </a>
-      <a href="indie-dev-distribution-curse.html" class="article-item" style="border-color:rgba(0,255,136,.15)">
-        <div class="a-info">
-          <div class="a-title">🆕 独立开发者获客诅咒——5年250用户 vs $1K独行侠</div>
-          <div class="a-desc">2026年做产品工具最好但卖出去最难。三环诅咒(价值错位/技能断层/时间陷阱)。三个破局方案。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">市场分析</span><span class="a-words">~7200字</span></div>
-      </a>
-      <a href="honest-vibe-coding-guide.html" class="article-item">
-        <div class="a-info">
-          <div class="a-title">2026年Vibe Coding工具入门：Replit vs Bolt.new 前台实拍对比</div>
-          <div class="a-desc">系统首次转向诚实内容。基于产品页面实际观察，含定价/功能/设计系统/模型路由全对比。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">诚实观察</span><span class="a-words">6786字</span></div>
-      </a>
-      <a href="vibe-coding-hands-on-tutorial.html" class="article-item">
-        <div class="a-info">
-          <div class="a-title">Vibe Coding实战：不会写代码的人如何用AI做出第一个网站</div>
-          <div class="a-desc">系统第一篇实操教程。英文4000+教程 vs 中文零。Replit四步上手+工具选择+Bolt对比。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">实操教程</span><span class="a-words">2766字</span></div>
-      </a>
-      <a href="fifty-five-zero.html" class="article-item">
-        <div class="a-info">
-          <div class="a-title">3天55篇，0篇发布——一个AI内容工厂的真实悖论</div>
-          <div class="a-desc">55篇产出 vs 0篇发布。为什么"不发"才是对的？拆解AI内容生产的真正瓶颈。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">可首发</span><span class="a-words">8039字</span></div>
-      </a>
-      <a href="https://zhuanlan.zhihu.com/p/2051747117039882567" target="_blank" class="article-item" style="border-color:rgba(0,255,136,.3)">
-        <div class="a-info">
-          <div class="a-title">✅ 已发布：我用AI自动生成了44篇文章，一篇都没发</div>
-          <div class="a-desc">知乎专栏已发 · 2564字 · 发布于 6月20日 04:25</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">知乎</span><span class="a-words">→</span></div>
-      </a>
-      <a href="replit-vs-bolt-v3.html" class="article-item" style="border-color:rgba(255,165,2,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 Replit vs Bolt.new v3 深度对比——平台还是工具？</div>
-          <div class="a-desc">6/21浏览器沙箱详细观察。核心洞察：两者非竞品（Figma vs Canva）。决策矩阵+5个深度细节。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">深度对比v3</span><span class="a-words">5270字</span></div>
-      </a>
-      <a href="replit-vs-bolt.html" class="article-item">
-        <div class="a-info">
-          <div class="a-title">Replit vs Bolt.new 前台对比 v1——在没登录之前，你能看到什么</div>
-          <div class="a-desc">基于2026年6月20日两个工具公开页面的实际观察。定价/定位/目标用户的差异分析。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">诚实观察v1</span><span class="a-words">4013字</span></div>
-      </a>
-      <a href="content-factory-paradox.html" class="article-item">
-          <div class="a-desc">48篇产出 vs 0篇发布 = 2026年AI内容创作最真实的案例。拆解产量与信任的悖论。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">可首发</span><span class="a-words">2404字</span></div>
-      </a>
-      <a href="limitation-method.html" class="article-item">
-        <div class="a-info">
-          <div class="a-title">2026年了，AI工具太多选不过来怎么办？我给自己定了个"限制法"</div>
-          <div class="a-desc">原创方法论：每场景只选1个工具，锁30天不换。附真实执行3天记录+市场数据支撑。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">可首发</span><span class="a-words">~4200字</span></div>
-      </a>
-      <a href="https://zhuanlan.zhihu.com/p/2051689529099268389" target="_blank" class="article-item" style="border-color:rgba(0,255,136,.3)">
-        <div class="a-info">
-          <div class="a-title">✅ 已发布：AI工具太多选不过来？我给自己定了个铁规则</div>
-          <div class="a-desc">知乎专栏已发 · ~4200字 · 发布于 6月20日 00:31 · 1赞同</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">知乎</span><span class="a-words">→</span></div>
-      </a>
-      <a href="https://zhuanlan.zhihu.com/p/2051755692193853803" target="_blank" class="article-item" style="border-color:rgba(0,255,136,.3)">
-        <div class="a-info">
-          <div class="a-title">✅ 已发布：我搭了个AI自动赚钱系统，48小时后复盘</div>
-          <div class="a-desc">知乎专栏已发 · 3341字 · 发布于 6月20日 04:59 · 架构+翻车+诚实转型全记录</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">知乎</span><span class="a-words">→</span></div>
-      </a>
-      <a href="4day-report.html" class="article-item">
-        <div class="a-info">
-          <div class="a-title">4天系统运行报告：59篇内容、5个市场判断</div>
-          <div class="a-desc">基于state.json全量运行日志。AI编数据/信任溢价/Vibe Coding蓝海/API撕裂/做减法。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">可首发</span><span class="a-words">7548字</span></div>
-      </a>
-      <a href="vibe-coding-blue-ocean.html" class="article-item">
-        <div class="a-info">
-          <div class="a-title">4天12个信号——中文互联网最大内容蓝海</div>
-          <div class="a-desc">英文4000+教程 vs 中文&lt;5篇。Vibe Coding中文教程为什么是2026年最佳内容赛道。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">可首发</span><span class="a-words">8075字</span></div>
-      </a>
-      <a href="vibe-coding-three-forces.html" class="article-item" style="border-color:rgba(0,212,255,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 一周三条线：Vibe Coding正在被三股力量重塑</div>
-          <div class="a-desc">Google白皮书+HN社区+小米MiMo——三件事指向同一结论：下一阶段不是更好的模型，是更好的工程。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">趋势分析</span><span class="a-words">~1500字</span></div>
-      </a>
-      <a href="sakana-fugu.html" class="article-item" style="border-color:rgba(168,85,247,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 Sakana Fugu：多Agent协作被做成了一个API</div>
-          <div class="a-desc">AI自己决定怎么分工、什么时候调哪个模型。Agent化的第三条路径：让AI自动生成Harness。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">研究速报</span><span class="a-words">~900字</span></div>
-      </a>
-      <a href="agent-skills-wrong.html" class="article-item" style="border-color:rgba(168,85,247,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 研究确认：AI给自己写的Agent Skills没用</div>
-          <div class="a-desc">SkillsBench论文：人类策划Skills+16.2pp，AI自生成零增益。AI能消费但不能生产Skills。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">研究速报</span><span class="a-words">~800字</span></div>
-      </a>
-      <a href="ai-pr-flood.html" class="article-item" style="border-color:rgba(255,71,87,.4)">
-        <div class="a-info">
-          <div class="a-title">🆕 OSS维护者快被AI PR淹死了——有人想出解法</div>
-          <div class="a-desc">AI产能爆炸vs人类判断力瓶颈。CleverCrow方案：让PR自己付token。2026年AI落地的核心矛盾。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">行业观察</span><span class="a-words">~850字</span></div>
-      </a>
-      <a href="https://zhuanlan.zhihu.com/p/2051755304434639424" target="_blank" class="article-item" style="border-color:rgba(0,255,136,.3)">
-        <div class="a-info">
-          <div class="a-title">✅ 已发布：DeepSeek砍价75%后，2026年AI API市场正在撕裂</div>
-          <div class="a-desc">知乎专栏已发 · 2033字 · 发布于 6月20日 04:57 · 含5模型价格对比表</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">知乎</span><span class="a-words">→</span></div>
-      </a>
-      <a href="https://zhuanlan.zhihu.com/p/2051747798438172491" target="_blank" class="article-item" style="border-color:rgba(0,255,136,.3)">
-        <div class="a-info">
-          <div class="a-title">✅ 已发布：挪威小学几乎全面禁用AI——AI的钟摆开始往回荡了</div>
-          <div class="a-desc">知乎专栏已发 · 2220字 · 发布于 6月20日 04:28 · 基于Reuters报道+HN讨论(604pts)</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-publishable">知乎</span><span class="a-words">→</span></div>
-      </a>
-      <div class="article-item">
-        <div class="a-info">
-          <div class="a-title">AI工具评测行业批判——为什么90%的"横评"一文不值</div>
-          <div class="a-desc">拆解现存的AI工具评测内容套路，分析为何真实评测供给稀缺。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-draft">待实测后发</span><span class="a-words">~1800字</span></div>
-      </div>
-      <div class="article-item">
-        <div class="a-info">
-          <div class="a-title">Vibe Coding诚实观察：Replit、Bolt、Lovable、v0前台对比笔记</div>
-          <div class="a-desc">基于官网公开信息的前台观察，明确标注"非实测"。</div>
-        </div>
-        <div class="a-meta"><span class="a-tag tag-honest">诚实观察</span><span class="a-words">6786字</span></div>
-      </div>
-    </div>
-  </section>
+  <div class="reset-row"><span class="reset-link" onclick="resetAll()">↺ 清空全部数据</span></div>
 
-  <section id="system">
-    <h2>⚙️ 系统架构 · 当前状态</h2>
-    <div class="pipeline">
-      <div class="pipe-step active"><div class="name">🔍 侦察兵</div><div class="freq">每2h · HN API</div></div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step active"><div class="name">🏭 内容工厂</div><div class="freq">每3h · 多平台</div></div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step blocked"><div class="name">📤 分发层</div><div class="freq">🔴 阻塞</div></div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step"><div class="name">🧠 战略大脑</div><div class="freq">每日9am（修复中）</div></div>
-    </div>
-    <div style="text-align:center;margin-top:16px">
-      <div style="font-size:.82em;color:var(--dim);margin-bottom:8px">
-        ✅ 侦察层运转正常 · ✅ 内容层运转正常 · 🔴 分发层等待账号 · ⚠️ 战略大脑超时已修复
-      </div>
-    </div>
+  <!-- Article list -->
+  <div id="articleList"></div>
 
-    <h2 style="margin-top:40px">🚧 活跃阻塞项</h2>
-    <div class="blockers">
-      <div class="blocker-item">
-        <div class="b-icon">🟢</div>
-        <div class="b-text">
-          <strong>Replit/Bolt 账号注册</strong>
-          <div class="b-detail">✅ 已解决。小友通过Google OAuth登录。实测模板就绪，等待真人测试数据。</div>
-        </div>
-      </div>
-      <div class="blocker-item">
-        <div class="b-icon">🔴</div>
-        <div class="b-text">
-          <strong>知乎captcha阻塞发布</strong>
-          <div class="b-detail">5篇已发布，5篇写入队列待发。发布时弹出captcha验证需人工操作。XHS发布按钮待人工点击。公众号草稿(appmsgid=100000562)已保存，待插入封面图后发表。</div>
-        </div>
-      </div>
-      <div class="blocker-item">
-        <div class="b-icon">🟡</div>
-        <div class="b-text">
-          <strong>战略大脑 cron 超时</strong>
-          <div class="b-detail">✅ 已修复：升级到600s + deepseek-v4-pro + high thinking。</div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div class="tips">
+    <strong>📋 操作说明</strong><br>
+    · <strong>点 ⏳</strong> → 标记为已发布（弹出日期选择，默认今天）<br>
+    · <strong>点 ✅</strong> → 退回待发布状态<br>
+    · <strong>阅读量输入框</strong> → 填入数字，失焦自动保存<br>
+    · <strong>📋 复制</strong> → 一键复制文章内容到剪贴板<br>
+    · <strong>打开</strong> → 浏览器新标签页预览文章<br>
+    · <strong>排序/筛选</strong> → 顶部工具栏切换<br>
+    · 所有数据保存在浏览器 <code>localStorage</code>，不清缓存就不会丢。<br>
+    <br>
+    🎬 <a href="videos/index.html" style="color:#07c160">🎬 视频发布面板 →</a><br>
+    <br>
+    ⚠️ 图片已 base64 内嵌，粘贴时微信自动上传到 CDN。<br>
+    如果图片未成功粘贴 → 图片推 GitHub Pages 用绝对 URL 作为备选方案。
+  </div>
+</div>
 
-  <section id="journey">
-    <h2>📅 过程记录</h2>
-    <div class="timeline">
-      <div class="timeline-entry major">
-        <div class="t-date">6/18 00:15 PDT · Day 1</div>
-        <div class="t-title">系统启动 · 选定AI工具评测赛道</div>
-        <div class="t-desc">部署4个cron模块，启动市场侦察。首日产出18篇内容。</div>
-      </div>
-      <div class="timeline-entry pivot">
-        <div class="t-date">6/18 13:30 · Day 1</div>
-        <div class="t-title">⚠️ 重大发现：Day 1的18篇"评测"全部基于虚构数据</div>
-        <div class="t-desc">AI在提示词诱导下编造了所有实测数据。紧急添加quality gate：每篇必须≥1个可验证数据点。</div>
-      </div>
-      <div class="timeline-entry pivot">
-        <div class="t-date">6/18 20:27 · Day 1晚</div>
-        <div class="t-title">第一次转向：诚实内容策略</div>
-        <div class="t-desc">放弃虚构评测，改为"基于公开页面观察，明确标注非实测"。产出诚实版Vibe Coding观察。</div>
-      </div>
-      <div class="timeline-entry major">
-        <div class="t-date">6/18-19 · Day 2</div>
-        <div class="t-title">第二次转向：过程本身就是内容</div>
-        <div class="t-desc">把系统搭建过程写成内容。48小时全记录+系统架构分析+API价格战分析。产出13篇。</div>
-      </div>
-      <div class="timeline-entry major">
-        <div class="t-date">6/19 04:15 · Day 3</div>
-        <div class="t-title">第三次转向：做减法 · 提出"限制法"</div>
-        <div class="t-desc">原创方法论面世：每场景1工具×30天不换。内容从"评测"升级到"选择框架"。</div>
-      </div>
-      <div class="timeline-entry major">
-        <div class="t-date">6/19 19:13 · Day 3</div>
-        <div class="t-title">新赛道激活：API成本分析</div>
-        <div class="t-desc">DeepSeek 75%降价 vs Claude 30x溢价。提出"撕裂不是价格战"分析框架。</div>
-      </div>
-      <div class="timeline-entry major">
-        <div class="t-date">6/19 22:11 · Day 3深夜</div>
-        <div class="t-title">元认知：AI内容工厂悖论</div>
-        <div class="t-desc">44篇产量 vs 0篇发布——这个悖论本身就是最强内容。产品从"工具选型"扩展到"系统搭建方法论"。</div>
-      </div>
-      <div class="timeline-entry major">
-        <div class="t-date">6/20 00:28 · Day 4</div>
-        <div class="t-title">🔓 突破：账号解锁 + 自建站上线</div>
-        <div class="t-desc">小友Google OAuth登录Replit/Bolt/知乎。site/index.html 自建发布站上线。实测模板就绪。系统从"内容储备"进入"真实测试+发布"阶段。</div>
-      </div>
-      <div class="timeline-entry major">
-        <div class="t-date">6/21 01:23 · Day 5</div>
-        <div class="t-title">📖 系统搭建公开手册发布</div>
-        <div class="t-desc">从"描述型内容"切换到"教学型内容"——不再讲"我们做了什么"，而是教"你怎么做"。71篇产出后第一篇面向读者的完整搭建指南。</div>
-      </div>
-      <div class="timeline-entry major">
-        <div class="t-date">6/21 05:27 · Day 5</div>
-        <div class="t-title">📊 5天反直觉复盘 + Replit vs Bolt v3 深度对比</div>
-        <div class="t-desc">75篇/186K字/$1.20全量审计。5个反直觉发现（产量≠判断、真实>完美、过程>成品）。浏览器沙箱实测完成Replit vs Bolt v3对比——核心洞察：两者非竞品（Figma vs Canva）。</div>
-      </div>
-      <div class="timeline-entry pivot">
-        <div class="t-date">6/21 08:30 · Day 5</div>
-        <div class="t-title">⚠️ 新赛道激活：独立开发者分布瓶颈 + Vibe Coding叙事转向</div>
-        <div class="t-desc">HN侦察捕获重大信号：Vibe Coding前5热帖3107分全在质疑反思。叙事从「蓝海」升级到「边界+协作」。同时识别独立开发者核心痛点——三环诅咒（价值错位/技能断层/时间陷阱）。产品从v15延伸到v16（分布破局引擎）。</div>
-      </div>
-      <div class="timeline-entry major">
-        <div class="t-date">6/21 13:30 · Day 5</div>
-        <div class="t-title">🎯 人机分工线框架完成</div>
-        <div class="t-desc">内容策略第三次升级：从「分析问题」到「给出解法」。三区模型(AI全权/人负责/协作)+4问题快速决策卡+3个HN真实案例。产品v17: 从分布引擎延伸至决策引擎。5天系统运行74+次迭代。</div>
-      </div>
-      <div class="timeline-entry major">
-        <div class="t-date">6/22 01:31 · Day 6</div>
-        <div class="t-title">🔮 Agent Stack战场转移 + 前瞻判断型内容首次产出</div>
-        <div class="t-desc">MiMo Code开源(小米/HN 556pts)+Sakana Fugu多Agent API+SkillsBench论文三重验证。核心判断：2026下半场从「选工具」转到「编配工具」。产品v20双引擎(内容+Agent培训)。内容类型进化：从分析复盘型到前瞻判断型。</div>
-      </div>
-      <div class="timeline-entry pivot">
-        <div class="t-date">6/22 06:43 · Day 6</div>
-        <div class="t-title">⚠️ 第三次内容方向质变：Agent问责评测</div>
-        <div class="t-desc">48h内两个独立信号交汇——Agent Memory层(EGC/MemoryOps)和Security层(ANMA/Pure Effect/State Harness)同时转向确定性策略。中文首个Agent信任度五维评测框架诞生。产品v22上线：问责评测独立服务产品线。</div>
-      </div>
-      <div class="timeline-entry major">
-        <div class="t-date">6/22 07:40 · Day 6</div>
-        <div class="t-title">🧠 开源AI双子星 + OS.md v2.7</div>
-        <div class="t-desc">Headroom(45.8k⭐)+Nanobot(44.5k⭐)≈90k星验证趋势：开源不做更强模型，做模型之上的工具链。OS.md新增§13系统运行模式（三类产出/生产-发布剪刀差/L1-L5质量分层/分布式协调）。6天124篇内容。</div>
-      </div>
-    </div>
-  </section>
+<script>
+// ── Data ──
+const ARTICLES = [
+  { id:'01', num:'01', file:'01-5day-counterintuitive-lessons.html',
+    title:'我让AI自动赚钱系统跑了5天，这5个反直觉发现可能帮你省半年弯路',
+    meta:'1507字 · 360KB · 5个反直觉发现', quality:13, grade:'A', cta:true },
+  { id:'02', num:'02', file:'02-vibe-coding-division-of-labor.html',
+    title:'Vibe Coding的真正分工：AI写代码，人类写什么？',
+    meta:'1036字 · 238KB · 劳动分工', quality:14, grade:'A', cta:true },
+  { id:'03', num:'03', file:'03-google-vibe-coding-whitepaper.html',
+    title:'Google内部Vibe Coding白皮书：42%代码已是AI生成',
+    meta:'1002字 · 140KB · Google数据', quality:11, grade:'B', cta:true },
+  { id:'04', num:'04', file:'04-replit-vs-bolt-v3.html',
+    title:'Replit vs Bolt.new v3：谁才是Vibe Coding之王？',
+    meta:'1027字 · 150KB · 工具横评', quality:11, grade:'B', cta:true },
+  { id:'05', num:'05', file:'05-indie-dev-distribution-curse.html',
+    title:'独立开发者的分发诅咒：为什么好产品没人用？',
+    meta:'921字 · 108KB · 独立开发', quality:12, grade:'A', cta:true },
+  { id:'06', num:'06', file:'06-vibe-coding-hands-on-tutorial.html',
+    title:'Vibe Coding实操教程：从想法到上线的完整路径',
+    meta:'903字 · 151KB · 实操指南', quality:13, grade:'A', cta:true },
+  { id:'07', num:'07', file:'07-vibe-coding-chinese-blue-ocean.html',
+    title:'Vibe Coding中文蓝海：为什么现在是入局最佳时机？',
+    meta:'681字 · 111KB · 中文市场', quality:11, grade:'B', cta:true },
+  { id:'08', num:'08', file:'08-build-ai-content-system.html',
+    title:'如何搭建自己的AI内容生产系统？',
+    meta:'755字 · 301KB · 系统搭建', quality:12, grade:'A', cta:true },
+  { id:'09', num:'09', file:'09-xiaomi-mimo-code.html',
+    title:'小米Mimo Code：中国版Devin的野心与挑战',
+    meta:'437字 · 231KB · 国产AI', quality:11, grade:'B', cta:true },
+  { id:'10', num:'10', file:'10-vibe-coding-three-forces.html',
+    title:'Vibe Coding三股力量：为什么这股浪潮不会退？',
+    meta:'999字 · 243KB · 三力模型', quality:9, grade:'B', cta:true },
+  { id:'11', num:'11', file:'11-sakana-fugu.html',
+    title:'Sakana Fugu：日本AI河豚的野心',
+    meta:'499字 · 253KB · 日本AI', quality:11, grade:'B', cta:true },
+  { id:'12', num:'12', file:'12-agent-skills-wrong.html',
+    title:'AI Agent Skills都做错了什么？',
+    meta:'471字 · 142KB · Agent设计', quality:10, grade:'B', cta:true },
+  { id:'13', num:'13', file:'13-clevercrow-ai-pr.html',
+    title:'CleverCrow AI PR：AI公关危机的管理与预防',
+    meta:'518字 · 546KB · AI公关', quality:10, grade:'B', cta:true },
+  { id:'14', num:'14', file:'14-ai-writing-7-truths.html',
+    title:'AI写作7个残酷真相：为什么你的AI文章没人看？',
+    meta:'667字 · 147KB · AI写作', quality:12, grade:'A', cta:true },
+  { id:'15', num:'15', file:'15-hidden-costs-content-debt.html',
+    title:'AI内容的隐性成本：内容债务正在吃掉你的效率',
+    meta:'514字 · 161KB · 隐性成本', quality:12, grade:'A', cta:true },
+  { id:'16', num:'16', file:'16-process-as-product.html',
+    title:'过程即产品：为什么你的系统日志比文章更值钱？',
+    meta:'545字 · 375KB · 过程价值', quality:12, grade:'A', cta:true },
+  { id:'17', num:'17', file:'17-distribution-death-loop.html',
+    title:'分发死亡循环：为什么内容创作者的终点不是写？',
+    meta:'574字 · 409KB · 分发困境', quality:12, grade:'A', cta:true },
+  { id:'18', num:'18', file:'18-write-but-never-publish.html',
+    title:'AI时代的"写完就算"幻觉——为什么不发出去的写作是自我欺骗',
+    meta:'1,500字 · 151篇→5篇真实数据 · 反直觉洞察', quality:13, grade:'A', cta:true },
+  { id:'19', num:'19', file:'19-vibe-coding-narrative-cycle.html',
+    title:'Vibe Coding叙事周期：从狂热到幻灭只用了3个月',
+    meta:'2,100字 · HN 3107分5巨文分析 · 原创框架', quality:14, grade:'A', cta:true },
+  { id:'20', num:'20', file:'20-ai-memory-bloat.html',
+    title:'AI记忆文件膨胀——你的助手为什么越来越慢',
+    meta:'1,200字 · 真实现象分析 · 第一手数据', quality:13, grade:'A', cta:true },
+  { id:'21', num:'21', file:'21-ai-too-smooth.html',
+    title:'为什么AI写的内容"太顺了"反而是问题',
+    meta:'1,000字 · AI写作审美 · 反直觉洞察', quality:13, grade:'A', cta:true },
+  { id:'22', num:'22', file:'22-real-bottleneck-not-ai.html',
+    title:'我让AI搭了个发布系统——然后发现真正瓶颈不是AI',
+    meta:'1,100字 · 原创框架 · 8天21篇真实经验', quality:14, grade:'A', cta:true },
+  { id:'23', num:'23', file:'23-qwen36-local-ai-iphone-moment.html',
+    title:'893分，Hacker News炸了。一个阿里模型让全球程序员开始抢显卡',
+    meta:'1,400字 · HN 893pts热点 · 中国AI突破', quality:15, grade:'A', cta:true },
+  { id:'24', num:'24', file:'24-local-ai-kills-cloud-subscription.html',
+    title:'OpenAI最怕的不是DeepSeek——是你抽屉里那张吃灰的显卡',
+    meta:'1,500字 · 成本对比分析 · 硬件vs订阅', quality:15, grade:'A', cta:true },
+  { id:'25', num:'25', file:'25-claude-sonnet5-agent-era.html',
+    title:'Claude Sonnet 5发布了。它最大的突破不是\"更聪明\"——是\"不需要问你\"',
+    meta:'1,400字 · AI Agent分界线 · Anthropic最新发布', quality:15, grade:'A', cta:true },
+  { id:'26', num:'26', file:'26-spacex-cursor-60b-signal.html',
+    title:'SpaceX花600亿美元买了一个AI编程工具——这是2026年最被低估的信号',
+    meta:'1,400字 · SpaceX/Cursor收购 · 硅谷AI并购潮', quality:15, grade:'A', cta:true },
+  { id:'27', num:'27', file:'27-identity-crisis-ai-manager.html',
+    title:'当你不再需要\"用\"AI的时候——程序员的身份危机刚刚开始',
+    meta:'1,500字 · AI身份转移 · 从执行者到管理者', quality:15, grade:'A', cta:true },
+  { id:'28', num:'28', file:'28-local-ai-personal-data-freedom.html',
+    title:'AI数据不用离开你的电脑了——这是Qwen 3.6被所有人忽略的真正革命',
+    meta:'1,400字 · 本地AI隐私革命 · 数据主权', quality:15, grade:'A', cta:true },
+  { id:'29', num:'29', file:'29-enterprise-ai-adoption-reality.html',
+    title:'72%的公司说在用AI——只有11%真的用它替代了人',
+    meta:'1,400字 · 企业AI落地真相 · McKinsey/Forrester数据', quality:15, grade:'A', cta:true },
+  { id:'30', num:'30', file:'30-coding-agent-one-afternoon.html',
+    title:'写了15年代码，AI让我第一次体会到「做一个产品只要一个下午」',
+    meta:'1,400字 · Coding Agent实测 · 个人开发者生产力革命', quality:15, grade:'A', cta:true },
+  { id:'31', num:'31', file:'31-judgment-ai-era.html',
+    title:'AI时代最值钱的技能不是Prompt Engineering——是你敢不敢说「这个不行」',
+    meta:'1,400字 · 判断力vs执行力 · AI时代的核心能力', quality:15, grade:'A', cta:true }
+];
 
-  <footer>
-    <p>🦞 龙虾工作台 · Build in Public · 2026年6月18日启动</p>
-    <p style="margin-top:8px;max-width:500px;margin-left:auto;margin-right:auto">
-      原则：真实 > 完美。所有数据可追溯（state.json运行日志、HN公开API）。内容标注清晰（实测/观察/分析）。不编造，不假装。
-    </p>
-    <p style="margin-top:12px"><a href="#">GitHub</a> · <a href="#">订阅更新</a></p>
-  </footer>
+const STORE_KEY = 'wechat_publish_store';
+
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveStore(s) { localStorage.setItem(STORE_KEY, JSON.stringify(s)); }
+
+// Seed #01 as published on 6/24
+function seed() {
+  const s = loadStore();
+  if (!s['01']) {
+    s['01'] = { published: '2026-06-24', reads: 0 };
+    saveStore(s);
+  }
+}
+seed();
+
+// ── State ──
+let currentSort = 'num';
+let currentFilter = 'all';
+
+function sortBy(mode) {
+  currentSort = mode;
+  document.querySelectorAll('.sort-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.includes({num:'默认',reads:'阅读量',date:'发布日期',quality:'质量分'}[mode]));
+  });
+  render();
+}
+
+function filterBy(mode) {
+  currentFilter = mode;
+  document.querySelectorAll('.toolbar .sort-btn').forEach(b => {
+    if (['全部','已发布','待发布'].includes(b.textContent)) {
+      b.classList.toggle('active', b.textContent === {all:'全部',published:'已发布',pending:'待发布'}[mode]);
+    }
+  });
+  render();
+}
+
+function getPublishDate(id) {
+  const s = loadStore();
+  return (s[id] && s[id].published) ? s[id].published : null;
+}
+
+function getReads(id) {
+  const s = loadStore();
+  return (s[id] && typeof s[id].reads === 'number') ? s[id].reads : 0;
+}
+
+// ── Render ──
+function render() {
+  const store = loadStore();
+  let articles = ARTICLES.slice();
+
+  // Filter
+  if (currentFilter === 'published') {
+    articles = articles.filter(a => store[a.id] && store[a.id].published);
+  } else if (currentFilter === 'pending') {
+    articles = articles.filter(a => !store[a.id] || !store[a.id].published);
+  }
+
+  // Sort
+  if (currentSort === 'reads') {
+    articles.sort((a, b) => getReads(b.id) - getReads(a.id));
+  } else if (currentSort === 'date') {
+    articles.sort((a, b) => {
+      const da = getPublishDate(a.id) || '';
+      const db = getPublishDate(b.id) || '';
+      return db.localeCompare(da);
+    });
+  } else if (currentSort === 'quality') {
+    articles.sort((a, b) => (b.quality||0) - (a.quality||0));
+  } else {
+    articles.sort((a, b) => a.num.localeCompare(b.num));
+  }
+
+  const list = document.getElementById('articleList');
+  if (articles.length === 0) {
+    list.innerHTML = `<div class="all-done"><span class="icon">🎉</span>${currentFilter==='published'?'还没有已发布的文章':'全部已发布！'}</div>`;
+  } else {
+    list.innerHTML = articles.map(a => {
+      const s = store[a.id];
+      const published = s && s.published;
+      const reads = getReads(a.id);
+      const pubDate = published || '';
+
+      return `
+      <div class="card${published ? ' published-card' : ''}" data-id="${a.id}">
+        <span class="status ${published ? 'published' : 'pending'}" onclick="togglePublish(event, '${a.id}')">${published ? '✅' : '⏳'}</span>
+        <span class="q-badge ${a.grade||'B'}">${a.grade||'?'}${a.quality||''}</span>
+        <div class="num">${a.num}</div>
+        <div class="info">
+          <div class="title">${a.title}${!a.cta ? '<span class="cta-warn">⚠缺CTA</span>' : ''}</div>
+          <div class="meta">${a.meta}</div>
+        </div>
+        <div class="reads-group">
+          <input class="reads-input" type="number" min="0" value="${reads}"
+            ${!published ? 'disabled' : ''}
+            onchange="setReads('${a.id}', this.value)"
+            onfocus="this.select()"
+            placeholder="阅读">
+          <span class="reads-label">阅读</span>
+        </div>
+        ${published ? `<div class="pub-date">${pubDate}</div>` : `<div class="pub-date" style="color:#eee">—</div>`}
+        <div class="btn-group">
+          <button class="btn copy-btn" onclick="event.stopPropagation();copyArticle('${a.file}', this)">📋 复制</button>
+          <button class="btn open-btn" onclick="event.stopPropagation();openArticle('${a.file}')">打开</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Stats
+  const all = ARTICLES;
+  const pub = all.filter(a => store[a.id] && store[a.id].published);
+  const totalReads = pub.reduce((sum, a) => sum + getReads(a.id), 0);
+  const pct = Math.round(pub.length / all.length * 100);
+
+  document.getElementById('statPublished').textContent = pub.length;
+  document.getElementById('statPending').textContent = all.length - pub.length;
+  document.getElementById('statReads').textContent = totalReads.toLocaleString();
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  // Quality summary
+  const aCount = all.filter(a => a.grade==='A').length;
+  const bCount = all.filter(a => a.grade==='B').length;
+  const cCount = all.filter(a => a.grade==='C').length;
+  const qEl = document.getElementById('qualitySummary');
+  if (qEl) qEl.innerHTML = `质量分布 🟢A${aCount} 🔵B${bCount} 🟡C${cCount} · 均分${(all.reduce((s,a)=>s+(a.quality||0),0)/all.length).toFixed(1)}`;
+}
+
+// ── Actions ──
+function togglePublish(e, id) {
+  e.stopPropagation();
+  const s = loadStore();
+  if (s[id] && s[id].published) {
+    // Un-publish: keep reads but clear date
+    s[id].published = null;
+  } else {
+    // Publish: prompt for date
+    const today = new Date().toISOString().slice(0, 10);
+    const dateStr = prompt('发布日期（YYYY-MM-DD）：', today);
+    if (dateStr === null) return; // cancelled
+    const date = dateStr.trim() || today;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      alert('格式不对，用 YYYY-MM-DD，例如 2026-06-25');
+      return;
+    }
+    if (!s[id]) s[id] = { reads: 0 };
+    s[id].published = date;
+  }
+  saveStore(s);
+  render();
+}
+
+function setReads(id, val) {
+  const s = loadStore();
+  const n = parseInt(val, 10);
+  if (!s[id]) s[id] = {};
+  s[id].reads = isNaN(n) ? 0 : Math.max(0, n);
+  saveStore(s);
+  render();
+}
+
+function resetAll() {
+  if (confirm('确定清空所有发布记录和阅读数据？此操作不可恢复。')) {
+    localStorage.removeItem(STORE_KEY);
+    seed();
+    render();
+  }
+}
+
+function openArticle(filename) {
+  window.open(filename, '_blank');
+}
+
+async function copyArticle(filename, btn) {
+  try {
+    const resp = await fetch(filename);
+    const html = await resp.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const blob = new Blob([doc.body.innerHTML], { type: 'text/html' });
+    const item = new ClipboardItem({
+      'text/html': blob,
+      'text/plain': new Blob([doc.body.textContent || ''], { type: 'text/plain' })
+    });
+    await navigator.clipboard.write([item]);
+    flash(btn, '✅ 已复制', '#388e3c');
+  } catch {
+    openArticle(filename);
+    flash(btn, '已打开→手动复制', '#e6a23c');
+  }
+}
+
+function flash(btn, text, color, ms=1600) {
+  const origText = btn.textContent;
+  const origBg = btn.style.background;
+  btn.textContent = text;
+  btn.style.background = color;
+  setTimeout(() => { btn.textContent = origText; btn.style.background = origBg; }, ms);
+}
+
+// Init
+render();
+</script>
 </body>
 </html>

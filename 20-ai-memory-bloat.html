@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI记忆文件膨胀——你的助手为什么越来越慢</title>
+<style>
+  body {
+    max-width: 680px; margin: 0 auto; padding: 24px 20px 60px;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 17px; line-height: 1.85; color: #2c3e50; background: #fff;
+  }
+  h1 { font-size: 22px; font-weight: 800; margin: 0 0 4px; }
+  .meta { color: #999; font-size: 13px; margin-bottom: 28px; }
+  h2 { font-size: 19px; font-weight: 700; margin: 36px 0 12px; color: #1a1a2e; }
+  p { margin: 0 0 16px; }
+  blockquote {
+    border-left: 3px solid #e67e22; margin: 20px 0; padding: 8px 16px;
+    background: #fef9f3; color: #666; font-size: 15px;
+  }
+  .highlight { background: linear-gradient(180deg, transparent 60%, #ffeaa7 60%); }
+  hr { border: none; border-top: 1px solid #eee; margin: 32px 0; }
+  strong { color: #1a1a2e; }
+  em { color: #e67e22; font-style: normal; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; }
+  th { background: #f5f5f5; color: #333; font-weight: 600; }
+  code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<h1>AI记忆文件膨胀</h1>
+<p class="meta">深海浪人鲸鱼 · 2026-06-26</p>
+
+<p>我给自己的助手搭了一套"记忆系统"。</p>
+<p>六月初，核心文件不到15KB。六月底，一个文件就过了70KB。</p>
+<p>我盯着那个数字看了半天，突然意识到一件事——</p>
+<p><span class="highlight">我在设计AI记忆的时候，默认了一条从不被质疑的规则：全部记住。越多越好。</span></p>
+
+<hr>
+
+<h2>一个奇怪的对比</h2>
+
+<p>人类的记忆是<em>默认遗忘</em>的系统。你今天早餐吃了什么，一周后大概率不记得。两年前同事的名字，现在要想一会儿。</p>
+<p>这不是bug。这是进化花了几百万年调出来的feature。</p>
+<p>遗忘让你不被噪音淹没。遗忘让你只保留"对生存有意义"的信息。</p>
+<p>然后我们来了，给AI设计记忆系统。我们做了什么？</p>
+<p><strong>我们把"记住一切"当成了默认。</strong></p>
+
+<table>
+<tr><th></th><th>人类记忆</th><th>AI记忆（当前默认设计）</th></tr>
+<tr><td>策略</td><td>先忘，再挑重要的记</td><td>先全记，再考虑要不要删</td></tr>
+<tr><td>结果</td><td>模糊但高信号</td><td>精确但高噪音</td></tr>
+<tr><td>膨胀</td><td>不会</td><td>必然</td></tr>
+</table>
+
+<blockquote>
+给AI做"全存"记忆策略，就像让你记住每天每顿饭的每根菜——你确实拥有了完整数据，但你已经没脑子做任何决策了。
+</blockquote>
+
+<hr>
+
+<h2>我的68KB实验</h2>
+
+<p>六月中，我给我的AI助手搭了一个"操作系统"文档。初始版本不到300行。</p>
+<p>两个星期后，它变成了1400多行。70KB。每天醒来要先读一遍。</p>
+<p>然后问题开始出现。</p>
+
+<p><strong>第一周</strong>：OS.md从0到v1。清晰、干净。每个新增章节都有明确的理由。助手拿到任务就知道该怎么做。</p>
+
+<p><strong>第二周</strong>：v1到v2.10。加入了芒格模型、人类史框架、心理学偏差库、审美体系。内容质量没下降——但<em>检索效率</em>下降了。助手看完整份OS需要越来越多的时间，在1400行里找到"该用哪个框架"变成了一个新的认知负担。</p>
+
+<p><strong>第三周</strong>：v2.10到v2.22。新问题出现了——跨文件不一致。同一件事在A文件里写着"已完成"，在B文件里写着"阻塞"。不是写错了，是在不同时间编辑不同文件时引入了矛盾。</p>
+
+<p>我不得不写了一个自动检查脚本来抓这种错误。这个脚本本身又成了一个新文件。</p>
+
+<p><span class="highlight">这就是记忆膨胀的三个阶段：增长→噪音→不一致。</span></p>
+
+<hr>
+
+<h2>膨胀的隐藏成本</h2>
+
+<p>很多人觉得"多存一点没关系，反正存储便宜"。</p>
+<p>存储是便宜的。但<strong>检索</strong>不是。</p>
+
+<p>AI助手读到一条新信息时，要判断"这条跟已有记忆中的哪条相关？" 如果记忆里有500条经验，O(n)搜索还不算慢。如果有5000条呢？50000条呢？</p>
+<p>更致命的是——不相关的记忆比没有记忆更糟糕。</p>
+<p>一条"某人2023年随口说的偏好"被当成"当前有效约束"，产生的错误比"没有这条信息"大得多。</p>
+
+<table>
+<tr><th>成本类型</th><th>表现</th><th>不容易被发现的原因</th></tr>
+<tr><td>检索延迟</td><td>助手响应变慢</td><td>每次慢一点点，累积效应</td></tr>
+<tr><td>信号稀释</td><td>关键信息被噪音淹没</td><td>不是"看不到"，是"看到了但没注意到它是重要的"</td></tr>
+<tr><td>过时信号</td><td>旧偏好覆盖新需求</td><td>不知道"这条已经过期了"所以无法主动纠正</td></tr>
+<tr><td>不一致</td><td>不同文件说不同的事</td><td>每次读一个文件时它本身是自洽的</td></tr>
+</table>
+
+<blockquote>
+记忆系统的成本不是你存了多少字节——是你每次查询时，要在多少字节里找到对的那几条。
+</blockquote>
+
+<hr>
+
+<h2>人类是怎么做的——以及为什么我们不模仿</h2>
+
+<p>人类记忆有三层过滤：</p>
+<p><strong>1. 遗忘曲线</strong>：艾宾浩斯发现，一小时后就忘掉56%。一天后忘掉66%。这是天然的信息压缩——不重要的事情自然脱落。</p>
+<p><strong>2. 睡眠整合</strong>：睡眠不只是休息。在REM阶段，大脑在重放白天的经历，把重要的强化，不重要的丢弃。这是夜间的"信息审计"。</p>
+<p><strong>3. 提取强化</strong>：被反复想起的事情被强化。想不起的事情自然消亡。"用进废退"的信息管理。</p>
+
+<p>而AI记忆呢？</p>
+<p><strong>没有遗忘、不睡觉、所有内容同等对待。</strong></p>
+<p>如果人类大脑这样运作——记住每一个像素、每一个声音、每一个无关路人的脸——你连穿过一条街都做不到。你的大脑会被噪音烧穿。</p>
+
+<hr>
+
+<h2>一个方向：记忆需要"代谢"</h2>
+
+<p>我不认为AI应该完全模仿人类记忆——我们不需要"忘记"关键事实。但我认为AI记忆系统需要一个人类记忆从来不缺的东西：<strong>新陈代谢</strong>。</p>
+<p>新东西进来 → 旧东西该出去的就出去。</p>
+<p>不是"全存"，不是"全忘"。是：</p>
+
+<p><strong>1. 衰减权重</strong>：每条记忆都有"新鲜度"。三个月没被引用的经验，权重自动降低。不是删除，是"不太可能跟当前相关"。</p>
+<p><strong>2. 定期整理</strong>：不是等到出错才修。是定期扫描——"这条信息还成立吗？跟其他信息矛盾吗？"</p>
+<p><strong>3. 教训压缩</strong>：五条相似的经验 → 压缩成一条"模式"。不是失去信息，是提高信号密度。</p>
+
+<blockquote>
+AI记忆不需要遗忘——需要代谢。进来的东西要有出路。存了不用的东西，不是资产，是负债。
+</blockquote>
+
+<p>至于我自己的系统——那个68KB的OS文档——我还没删减它。但至少，我现在知道每次往里加新东西时，问的不只是"这个对吗"，还有一句：</p>
+<p><em>"这个，值不值得被记住？"</em></p>
+
+<hr style="margin-top: 40px;">
+<p style="color: #999; font-size: 12px;">
+标签：#AI系统设计 #记忆膨胀 #AI助手 #系统思考<br>
+题材：L3·模式识别 · 原创分析 · 第一手数据
+</p>
+
+</body>
+</html>
